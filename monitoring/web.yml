@@ -1,0 +1,5 @@
+basic_auth_users:
+  # Utilisateur : admin / mot de passe : prometheus_dev_password
+  # Pour changer le mot de passe, regénérer le hash avec :
+  #   python -c "import bcrypt; print(bcrypt.hashpw(b'NOUVEAU_MDP', bcrypt.gensalt()).decode())"
+  admin: $2b$12$Z0cU/mptlDG5.4AaDlvRpO/z8aZQCoa5iZpEje1YIpfuO06bBDfLe

@@ -220,6 +220,64 @@ services:
       - healthai_network
 
   # ─────────────────────────────────────────────
+  # MINIO — Stockage objet S3-compatible (Tom)
+  # ─────────────────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: healthai_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # Console web
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # PROMETHEUS — Collecte de métriques (Tom)
+  # ─────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: healthai_prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # GRAFANA — Dashboards de monitoring (Tom)
+  # ─────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: healthai_grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3003:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
   # ADMINER - Interface BDD (dev uniquement)
   # ─────────────────────────────────────────────
   adminer:
@@ -239,6 +297,9 @@ volumes:
   postgres_data:
   mongo_data:
   ollama_data:
+  minio_data:
+  prometheus_data:
+  grafana_data:
 
 networks:
   healthai_network:

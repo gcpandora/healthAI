@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Prometheus se scrappe lui-même
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # API FastAPI — nécessite prometheus-fastapi-instrumentator installé côté api
+  # Si /metrics n'est pas exposé, Prometheus logge une erreur mais continue
+  - job_name: healthai-api
+    static_configs:
+      - targets: ["api:8000"]
+    metrics_path: /metrics
+
+  # Micro-service recommandations
+  - job_name: healthai-recommendation
+    static_configs:
+      - targets: ["recommendation:8001"]
+    metrics_path: /metrics

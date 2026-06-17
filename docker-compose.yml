@@ -220,6 +220,25 @@ services:
       - healthai_network
 
   # ─────────────────────────────────────────────
+  # PUBLICATIONS API — Stub (Tojo)
+  # ─────────────────────────────────────────────
+  publications-api:
+    build:
+      context: ./services/publications-api
+      dockerfile: Dockerfile
+    container_name: healthai_publications_api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    ports:
+      - "8004:8004"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
   # MINIO — Stockage objet S3-compatible (Tom)
   # ─────────────────────────────────────────────
   minio:

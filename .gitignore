@@ -9,7 +9,7 @@
 *.key
 *.pem
 secrets/
-.env.example
+# .env.example est volontairement versionné (template sans secrets)
 
 # ─── Python ──────────────────────────────────────
 __pycache__/

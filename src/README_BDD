@@ -1,0 +1,109 @@
+# HealthAI Coach — Base de Données Relationnelle
+
+**MSPR Bloc E6.1 — EPSI Grenoble 2025-2026**  
+**Rôle : Conception et implémentation de la base de données relationnelle**  
+**Auteure : Hanane AGHAZAF**
+
+---
+
+## Prérequis
+
+- [Node.js](https://nodejs.org/) v18 ou supérieur
+- [WAMP](https://www.wampserver.com/) (MariaDB/MySQL) démarré sur le port **3307**
+- npm
+
+---
+
+## Installation
+
+```bash
+# 1. Aller dans le dossier du projet
+cd src
+
+# 2. Installer les dépendances Node.js
+npm install
+```
+
+---
+
+## Configuration
+
+Ouvrir le fichier `db.js` et vérifier les paramètres de connexion :
+
+```js
+const pool = mysql.createPool({
+    host:     "localhost",
+    user:     "root",
+    password: "",        // ← sans password
+    database: "healthai_coach",
+    port:     3307
+});
+```
+
+---
+
+## Lancement du pipeline (une seule commande)
+
+```bash
+node lancer_bdd.js
+```
+
+Cette commande exécute automatiquement les 5 étapes suivantes :
+
+| Étape | Action |
+|-------|--------|
+| 1/5 | Création de la base de données et des 8 tables (`schema.sql`) |
+| 2/5 | Chargement des aliments (`foods`) |
+| 3/5 | Chargement des utilisateurs + biométrie (`users`, `biometrics`) |
+| 4/5 | Chargement des profils santé + objectifs (`health_profiles`, `user_goals`) |
+| 5/5 | Chargement des activités + nutrition (`activity_logs`, `nutrition_logs`) |
+
+---
+
+## Structure des fichiers
+
+```
+src/
+├── db.js              → Connexion à MariaDB (pool de connexions)
+├── init_db.js         → Lecture et exécution de schema.sql
+├── schema.sql         → Définition des 8 tables
+├── service.js         → Fonctions ETL (insertion des données CSV)
+├── lancer_bdd.js      → Script principal — orchestre tout le pipeline
+└── data/
+    ├── daily_food_nutrition_bdd.csv
+    ├── gym_members_exercise_bdd.csv
+    ├── gym_members_synthetic_bdd.csv
+    └── diet_recommendations_bdd.csv
+```
+
+---
+
+## Tables créées
+
+| Table | Contenu |
+|-------|---------|
+| `users` | Profils utilisateurs |
+| `biometrics` | Mesures physiques (BMI, BPM, masse grasse) |
+| `foods` | Base nutritionnelle complète |
+| `exercises` | Catalogue des types d'exercices |
+| `health_profiles` | Données médicales et diététiques |
+| `user_goals` | Objectifs de santé personnalisés |
+| `activity_logs` | Journal des séances d'activité |
+| `nutrition_logs` | Journal alimentaire |
+
+---
+
+## Tests de validation
+
+Les 10 requêtes SQL de validation sont disponibles dans le fichier :  
+ `tests_bdd_healthai.pdf`
+
+À exécuter dans **phpMyAdmin** → sélectionner la base `healthai_coach` → onglet **SQL**.
+
+---
+
+## Documentation
+
+- `Rapport_Technique_BDD_HealthAI_Coach.pdf` — Rapport technique complet
+- `healthai_coach_erd.pdf` — Diagramme ERD (relations entre tables)
+- `tests_bdd_healthai.pdf` — Tests de validation BDD

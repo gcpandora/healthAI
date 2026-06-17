@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maquettes HealthAI Coach — MSPR TPRE502</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f1f5f9; color: #1e293b; }
+
+    header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #fff;
+      padding: 32px 40px;
+    }
+    header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    header p  { font-size: 13px; color: #94a3b8; }
+
+    main { max-width: 860px; margin: 32px auto; padding: 0 20px; }
+
+    h2 { font-size: 12px; font-weight: 700; text-transform: uppercase;
+         letter-spacing: 1px; color: #64748b; margin-bottom: 12px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-bottom: 32px; }
+
+    a.card {
+      display: block;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow .15s, border-color .15s;
+    }
+    a.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); border-color: #94a3b8; }
+    a.card:focus { outline: 3px solid #2563eb; outline-offset: 2px; }
+
+    .card-num  { font-size: 10px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; }
+    .card-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+    .card-title{ font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 4px; }
+    .card-desc { font-size: 11px; color: #64748b; line-height: 1.4; }
+
+    .badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-top: 8px;
+      border: 1.5px solid;
+    }
+    .badge-blue   { color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; }
+    .badge-green  { color: #166534; border-color: #86efac; background: #f0fdf4; }
+    .badge-orange { color: #92400e; border-color: #fcd34d; background: #fffbeb; }
+    .badge-red    { color: #991b1b; border-color: #fca5a5; background: #fef2f2; }
+    .badge-purple { color: #581c87; border-color: #d8b4fe; background: #faf5ff; }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 11px;
+      color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>HealthAI Coach — Maquettes responsive</h1>
+  <p>MSPR TPRE502 · 7 wireframes · 3 breakpoints chacun (Desktop / Tablette / Mobile)</p>
+</header>
+
+<main>
+  <h2>Dashboard</h2>
+  <div class="grid">
+    <a class="card" href="01-dashboard.html">
+      <div class="card-num">WF-01</div>
+      <span class="card-icon">📊</span>
+      <div class="card-title">Dashboard principal</div>
+      <div class="card-desc">Vue post-login — KPIs, répartition par plan et genre, export CSV</div>
+      <span class="badge badge-blue">État nominal</span>
+    </a>
+  </div>
+
+  <h2>Analyse nutritionnelle IA</h2>
+  <div class="grid">
+    <a class="card" href="02-nutrition-upload.html">
+      <div class="card-num">WF-02</div>
+      <span class="card-icon">📷</span>
+      <div class="card-title">Upload photo</div>
+      <div class="card-desc">Dropzone, bouton analyser désactivé, panneau résultat vide</div>
+      <span class="badge badge-blue">État initial</span>
+    </a>
+    <a class="card" href="03-nutrition-resultat.html">
+      <div class="card-num">WF-03</div>
+      <span class="card-icon">🥗</span>
+      <div class="card-title">Résultat analyse</div>
+      <div class="card-desc">Aliments détectés, barres macros, badge balance, conseils IA</div>
+      <span class="badge badge-green">Succès</span>
+    </a>
+    <a class="card" href="04-nutrition-degrade.html">
+      <div class="card-num">WF-04</div>
+      <span class="card-icon">⚠️</span>
+      <div class="card-title">État dégradé</div>
+      <div class="card-desc">Fallback API, badge mode dégradé, erreur timeout et quota 429</div>
+      <span class="badge badge-red">Erreur / Fallback</span>
+    </a>
+  </div>
+
+  <h2>Recommandations fitness IA</h2>
+  <div class="grid">
+    <a class="card" href="05-fitness-formulaire.html">
+      <div class="card-num">WF-05</div>
+      <span class="card-icon">📝</span>
+      <div class="card-title">Formulaire profil</div>
+      <div class="card-desc">Objectif, biométrie, niveau, limitations, équipement — avec erreurs de validation</div>
+      <span class="badge badge-orange">Saisie</span>
+    </a>
+    <a class="card" href="06-fitness-resultat.html">
+      <div class="card-num">WF-06</div>
+      <span class="card-icon">💪</span>
+      <div class="card-title">Programme généré</div>
+      <div class="card-desc">Résumé, stats, 3 séances d'entraînement détaillées avec exercices</div>
+      <span class="badge badge-green">Succès</span>
+    </a>
+    <a class="card" href="07-fitness-skeleton.html">
+      <div class="card-num">WF-07</div>
+      <span class="card-icon">⏳</span>
+      <div class="card-title">Chargement (skeleton)</div>
+      <div class="card-desc">Skeleton loader animé, formulaire verrouillé, indicateur aria-live</div>
+      <span class="badge badge-purple">Loading</span>
+    </a>
+  </div>
+</main>
+
+<footer>
+  HealthAI Coach · MSPR TPRE502 · Wireframes basse-fidélité · Style gris/blanc sans couleurs finales
+</footer>
+
+</body>
+</html>

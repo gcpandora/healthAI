@@ -1,0 +1,421 @@
+openapi: 3.1.0
+info:
+  title: HealthAI Coach — API IA
+  description: |
+    API de recommandations personnalisées en nutrition et activité physique.
+    Orchestration LLM locale (Ollama/llama3) + vision cloud (HuggingFace).
+    Stratégie cascade : Cache → Ollama → HuggingFace → Fallback.
+  version: 1.0.0
+  contact:
+    name: Tojo — MSPR TPRE502
+servers:
+  - url: http://localhost:8002
+    description: Développement local
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    FoodItem:
+      type: object
+      required: [nom, quantite, calories]
+      properties:
+        nom:
+          type: string
+          example: "riz"
+        quantite:
+          type: string
+          example: "200g"
+        calories:
+          type: integer
+          example: 260
+
+    Macros:
+      type: object
+      required: [calories, proteines, glucides, lipides]
+      properties:
+        calories:
+          type: integer
+          example: 540
+        proteines:
+          type: number
+          format: float
+          example: 30.5
+        glucides:
+          type: number
+          format: float
+          example: 60.0
+        lipides:
+          type: number
+          format: float
+          example: 10.0
+
+    NutritionAnalyzeResponse:
+      type: object
+      required: [aliments, nutrition, score_sante, conseils, source]
+      properties:
+        aliments:
+          type: array
+          items:
+            $ref: '#/components/schemas/FoodItem'
+        nutrition:
+          $ref: '#/components/schemas/Macros'
+        score_sante:
+          type: integer
+          minimum: 1
+          maximum: 10
+          example: 8
+        desequilibres:
+          type: array
+          items:
+            type: string
+          example: ["Excès de glucides simples"]
+        conseils:
+          type: array
+          items:
+            type: string
+          example: ["Ajoutez des légumes verts pour équilibrer."]
+        source:
+          type: string
+          enum: [ollama, huggingface, fallback]
+          example: "ollama"
+
+    Repas:
+      type: object
+      required: [nom, calories, ingredients]
+      properties:
+        nom:
+          type: string
+          example: "Salade de quinoa"
+        calories:
+          type: integer
+          example: 450
+        ingredients:
+          type: array
+          items:
+            type: string
+          example: ["quinoa", "tomates", "concombre"]
+
+    JourPlan:
+      type: object
+      required: [jour, petit_dejeuner, dejeuner, diner, total_calories]
+      properties:
+        jour:
+          type: integer
+          example: 1
+        petit_dejeuner:
+          $ref: '#/components/schemas/Repas'
+        dejeuner:
+          $ref: '#/components/schemas/Repas'
+        diner:
+          $ref: '#/components/schemas/Repas'
+        total_calories:
+          type: integer
+          example: 1800
+
+    MealPlanResponse:
+      type: object
+      required: [plan, source]
+      properties:
+        plan:
+          type: array
+          items:
+            $ref: '#/components/schemas/JourPlan'
+        source:
+          type: string
+          enum: [ollama, fallback]
+          example: "ollama"
+
+    Exercice:
+      type: object
+      required: [nom, series, repetitions, repos_sec]
+      properties:
+        nom:
+          type: string
+          example: "Pompes"
+        series:
+          type: integer
+          example: 3
+        repetitions:
+          type: string
+          example: "12"
+        repos_sec:
+          type: integer
+          example: 60
+
+    JourEntrainement:
+      type: object
+      required: [jour, type_seance, exercices, duree_estimee_min]
+      properties:
+        jour:
+          type: integer
+          example: 1
+        type_seance:
+          type: string
+          example: "Cardio + renforcement"
+        exercices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Exercice'
+        duree_estimee_min:
+          type: integer
+          example: 45
+
+    ActivityRecommendResponse:
+      type: object
+      required: [programme, source]
+      properties:
+        programme:
+          type: array
+          items:
+            $ref: '#/components/schemas/JourEntrainement'
+        conseils:
+          type: array
+          items:
+            type: string
+          example: ["Hydratez-vous avant chaque séance."]
+        source:
+          type: string
+          enum: [ollama, fallback]
+          example: "ollama"
+
+    ServiceStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, down]
+          example: "ok"
+        latency_ms:
+          type: number
+          format: float
+          example: 142.5
+
+    HealthResponse:
+      type: object
+      required: [status, services]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, down]
+          example: "ok"
+        services:
+          type: object
+          properties:
+            ollama:
+              $ref: '#/components/schemas/ServiceStatus'
+            huggingface:
+              $ref: '#/components/schemas/ServiceStatus'
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          example: "X-API-Key invalide ou manquante"
+        detail:
+          type: string
+          nullable: true
+
+paths:
+  /nutrition/analyze:
+    post:
+      summary: Analyse un repas (photo ou description)
+      description: |
+        Si une image est fournie, HuggingFace Vision identifie les aliments.
+        Ollama génère ensuite l'analyse nutritionnelle complète.
+        Si tous les services IA sont indisponibles, une réponse fallback est retournée.
+      operationId: analyzeNutrition
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  description: Description texte du repas (si pas d'image)
+                  example: "riz saumon brocolis"
+                health_goal:
+                  type: string
+                  description: Objectif santé de l'utilisateur
+                  default: "equilibre"
+                  example: "perte_poids"
+                image:
+                  type: string
+                  format: binary
+                  description: Photo du repas (JPEG/PNG)
+      responses:
+        '200':
+          description: Analyse nutritionnelle réussie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NutritionAnalyzeResponse'
+        '401':
+          description: Clé API invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Limite de requêtes atteinte (30/min)
+
+  /nutrition/meal-plan:
+    post:
+      summary: Génère un plan de repas personnalisé
+      description: |
+        Ollama génère un plan de repas sur plusieurs jours selon l'objectif,
+        les calories cibles, le budget, le régime alimentaire et les allergies.
+      operationId: generateMealPlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                objectif:
+                  type: string
+                  enum: [perte_poids, prise_masse, equilibre]
+                  default: "equilibre"
+                calories_cible:
+                  type: integer
+                  minimum: 1000
+                  maximum: 5000
+                  default: 2000
+                duree_jours:
+                  type: integer
+                  minimum: 1
+                  maximum: 14
+                  default: 7
+                budget:
+                  type: string
+                  enum: [faible, moyen, eleve]
+                  nullable: true
+                regime:
+                  type: string
+                  enum: [vegetarien, vegan, sans_gluten]
+                  nullable: true
+                allergies:
+                  type: array
+                  items:
+                    type: string
+                  example: ["arachides", "lactose"]
+            example:
+              objectif: "perte_poids"
+              calories_cible: 1800
+              duree_jours: 7
+              budget: "moyen"
+              regime: "vegetarien"
+              allergies: []
+      responses:
+        '200':
+          description: Plan de repas généré
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealPlanResponse'
+        '401':
+          description: Clé API invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Limite de requêtes atteinte (30/min)
+
+  /activity/recommend:
+    post:
+      summary: Génère un programme d'entraînement personnalisé
+      description: |
+        Ollama crée un programme d'entraînement adapté au niveau de l'utilisateur,
+        aux équipements disponibles et aux limitations physiques.
+      operationId: recommendActivity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                objectif:
+                  type: string
+                  enum: [perte_poids, prise_masse, endurance, forme_generale]
+                  default: "forme_generale"
+                niveau:
+                  type: string
+                  enum: [debutant, intermediaire, avance]
+                  default: "debutant"
+                duree_seance_min:
+                  type: integer
+                  minimum: 15
+                  maximum: 120
+                  default: 45
+                equipements:
+                  type: array
+                  items:
+                    type: string
+                  example: ["haltères", "tapis"]
+                limitations:
+                  type: array
+                  items:
+                    type: string
+                  example: ["douleur genou droit"]
+            example:
+              objectif: "perte_poids"
+              niveau: "intermediaire"
+              duree_seance_min: 45
+              equipements: ["haltères"]
+              limitations: []
+      responses:
+        '200':
+          description: Programme d'entraînement généré
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityRecommendResponse'
+        '401':
+          description: Clé API invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Limite de requêtes atteinte (30/min)
+
+  /health:
+    get:
+      summary: Vérifie l'état de l'API et des services externes
+      description: |
+        Endpoint de supervision sans authentification.
+        Retourne le statut et la latence de chaque service IA.
+        Le frontend l'utilise pour détecter les pannes et activer le mode fallback.
+      operationId: healthCheck
+      security: []
+      responses:
+        '200':
+          description: État des services
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "ok"
+                services:
+                  ollama:
+                    status: "ok"
+                    latency_ms: 85.3
+                  huggingface:
+                    status: "degraded"
+                    latency_ms: 1240.7

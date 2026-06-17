@@ -1,0 +1,2915 @@
+﻿openapi: 3.1.0
+info:
+  title: HealthAI Coach API
+  version: 0.1.0
+paths:
+  /:
+    get:
+      tags:
+      - health
+      summary: Root
+      description: Point de santé de l'API.
+      operationId: root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /health:
+    get:
+      tags:
+      - health
+      summary: Health Check
+      description: Healthcheck pour Docker et CI.
+      operationId: health_check_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /auth/login:
+    post:
+      tags:
+      - Auth
+      summary: Login
+      operationId: login_auth_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/users/:
+    post:
+      tags:
+      - Users
+      summary: Create User
+      operationId: create_user_api_v1_users__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Users
+      summary: List Users
+      operationId: list_users_api_v1_users__get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Skip
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRead'
+                title: Response List Users Api V1 Users  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/users/{user_id}:
+    get:
+      tags:
+      - Users
+      summary: Get User
+      operationId: get_user_api_v1_users__user_id__get
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Users
+      summary: Update User
+      operationId: update_user_api_v1_users__user_id__put
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Users
+      summary: Delete User
+      operationId: delete_user_api_v1_users__user_id__delete
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/nutrition-items/:
+    post:
+      tags:
+      - Nutrition Items
+      summary: Create Nutrition Item
+      operationId: create_nutrition_item_api_v1_nutrition_items__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NutritionItemCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NutritionItemRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Nutrition Items
+      summary: List Nutrition Items
+      operationId: list_nutrition_items_api_v1_nutrition_items__get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Skip
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Search
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NutritionItemRead'
+                title: Response List Nutrition Items Api V1 Nutrition Items  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/nutrition-items/{item_id}:
+    get:
+      tags:
+      - Nutrition Items
+      summary: Get Nutrition Item
+      operationId: get_nutrition_item_api_v1_nutrition_items__item_id__get
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Item Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NutritionItemRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Nutrition Items
+      summary: Update Nutrition Item
+      operationId: update_nutrition_item_api_v1_nutrition_items__item_id__put
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Item Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NutritionItemUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NutritionItemRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Nutrition Items
+      summary: Delete Nutrition Item
+      operationId: delete_nutrition_item_api_v1_nutrition_items__item_id__delete
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Item Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/food-logs/:
+    post:
+      tags:
+      - Food Logs
+      summary: Create Food Log
+      operationId: create_food_log_api_v1_food_logs__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FoodLogCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FoodLogRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Food Logs
+      summary: List Food Logs
+      operationId: list_food_logs_api_v1_food_logs__get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Skip
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FoodLogRead'
+                title: Response List Food Logs Api V1 Food Logs  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/food-logs/{food_log_id}:
+    get:
+      tags:
+      - Food Logs
+      summary: Get Food Log
+      operationId: get_food_log_api_v1_food_logs__food_log_id__get
+      parameters:
+      - name: food_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Food Log Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FoodLogRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Food Logs
+      summary: Update Food Log
+      operationId: update_food_log_api_v1_food_logs__food_log_id__put
+      parameters:
+      - name: food_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Food Log Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FoodLogUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FoodLogRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Food Logs
+      summary: Delete Food Log
+      operationId: delete_food_log_api_v1_food_logs__food_log_id__delete
+      parameters:
+      - name: food_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Food Log Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/user-metrics/:
+    post:
+      tags:
+      - User Metrics
+      summary: Create User Metric
+      operationId: create_user_metric_api_v1_user_metrics__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMetricCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetricRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - User Metrics
+      summary: List User Metrics
+      operationId: list_user_metrics_api_v1_user_metrics__get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Skip
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserMetricRead'
+                title: Response List User Metrics Api V1 User Metrics  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/user-metrics/{metric_id}:
+    get:
+      tags:
+      - User Metrics
+      summary: Get User Metric
+      operationId: get_user_metric_api_v1_user_metrics__metric_id__get
+      parameters:
+      - name: metric_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Metric Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetricRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - User Metrics
+      summary: Update User Metric
+      operationId: update_user_metric_api_v1_user_metrics__metric_id__put
+      parameters:
+      - name: metric_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Metric Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMetricUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetricRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - User Metrics
+      summary: Delete User Metric
+      operationId: delete_user_metric_api_v1_user_metrics__metric_id__delete
+      parameters:
+      - name: metric_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Metric Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/exercises/:
+    post:
+      tags:
+      - Exercises
+      summary: Create Exercise
+      operationId: create_exercise_api_v1_exercises__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExerciseRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Exercises
+      summary: List Exercises
+      operationId: list_exercises_api_v1_exercises__get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Skip
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Search
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExerciseRead'
+                title: Response List Exercises Api V1 Exercises  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/exercises/{exercise_id}:
+    get:
+      tags:
+      - Exercises
+      summary: Get Exercise
+      operationId: get_exercise_api_v1_exercises__exercise_id__get
+      parameters:
+      - name: exercise_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Exercise Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExerciseRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Exercises
+      summary: Update Exercise
+      operationId: update_exercise_api_v1_exercises__exercise_id__put
+      parameters:
+      - name: exercise_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Exercise Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExerciseRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Exercises
+      summary: Delete Exercise
+      operationId: delete_exercise_api_v1_exercises__exercise_id__delete
+      parameters:
+      - name: exercise_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Exercise Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workout-logs/:
+    post:
+      tags:
+      - Workout Logs
+      summary: Create Workout Log
+      operationId: create_workout_log_api_v1_workout_logs__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutLogCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutLogRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Workout Logs
+      summary: List Workout Logs
+      operationId: list_workout_logs_api_v1_workout_logs__get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Skip
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkoutLogRead'
+                title: Response List Workout Logs Api V1 Workout Logs  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workout-logs/{workout_log_id}:
+    get:
+      tags:
+      - Workout Logs
+      summary: Get Workout Log
+      operationId: get_workout_log_api_v1_workout_logs__workout_log_id__get
+      parameters:
+      - name: workout_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Workout Log Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutLogRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Workout Logs
+      summary: Update Workout Log
+      operationId: update_workout_log_api_v1_workout_logs__workout_log_id__put
+      parameters:
+      - name: workout_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Workout Log Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutLogUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutLogRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Workout Logs
+      summary: Delete Workout Log
+      operationId: delete_workout_log_api_v1_workout_logs__workout_log_id__delete
+      parameters:
+      - name: workout_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Workout Log Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/user-goals/:
+    post:
+      tags:
+      - User Goals
+      summary: Create User Goal
+      operationId: create_user_goal_api_v1_user_goals__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGoalCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGoalRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - User Goals
+      summary: List User Goals
+      operationId: list_user_goals_api_v1_user_goals__get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Skip
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserGoalRead'
+                title: Response List User Goals Api V1 User Goals  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/user-goals/{goal_id}:
+    get:
+      tags:
+      - User Goals
+      summary: Get User Goal
+      operationId: get_user_goal_api_v1_user_goals__goal_id__get
+      parameters:
+      - name: goal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Goal Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGoalRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - User Goals
+      summary: Update User Goal
+      operationId: update_user_goal_api_v1_user_goals__goal_id__put
+      parameters:
+      - name: goal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Goal Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGoalUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGoalRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - User Goals
+      summary: Delete User Goal
+      operationId: delete_user_goal_api_v1_user_goals__goal_id__delete
+      parameters:
+      - name: goal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Goal Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/health-profiles/:
+    post:
+      tags:
+      - Health Profiles
+      summary: Create Health Profile
+      operationId: create_health_profile_api_v1_health_profiles__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthProfileCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthProfileRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Health Profiles
+      summary: List Health Profiles
+      operationId: list_health_profiles_api_v1_health_profiles__get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Skip
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HealthProfileRead'
+                title: Response List Health Profiles Api V1 Health Profiles  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/health-profiles/{profile_id}:
+    get:
+      tags:
+      - Health Profiles
+      summary: Get Health Profile
+      operationId: get_health_profile_api_v1_health_profiles__profile_id__get
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthProfileRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Health Profiles
+      summary: Update Health Profile
+      operationId: update_health_profile_api_v1_health_profiles__profile_id__put
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthProfileUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthProfileRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Health Profiles
+      summary: Delete Health Profile
+      operationId: delete_health_profile_api_v1_health_profiles__profile_id__delete
+      parameters:
+      - name: profile_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Profile Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/vision/analyze-meal:
+    post:
+      tags:
+      - Vision IA
+      summary: Analyze Meal
+      operationId: analyze_meal_api_v1_vision_analyze_meal_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Body_analyze_meal_api_v1_vision_analyze_meal_post'
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealAnalysisResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/vision/analyze-meal/{analysis_id}:
+    get:
+      tags:
+      - Vision IA
+      summary: Get Analysis
+      operationId: get_analysis_api_v1_vision_analyze_meal__analysis_id__get
+      parameters:
+      - name: analysis_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Analysis Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealAnalysisResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    Body_analyze_meal_api_v1_vision_analyze_meal_post:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: File
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        health_goal:
+          type: string
+          title: Health Goal
+          default: equilibre
+      type: object
+      title: Body_analyze_meal_api_v1_vision_analyze_meal_post
+    ExerciseCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        muscle_group:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Muscle Group
+        equipment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipment
+        difficulty:
+          type: string
+          enum:
+          - beginner
+          - intermediate
+          - advanced
+          title: Difficulty
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        external_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: External Id
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+      type: object
+      required:
+      - name
+      - difficulty
+      title: ExerciseCreate
+    ExerciseRead:
+      properties:
+        name:
+          type: string
+          title: Name
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        muscle_group:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Muscle Group
+        equipment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipment
+        difficulty:
+          type: string
+          enum:
+          - beginner
+          - intermediate
+          - advanced
+          title: Difficulty
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        external_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: External Id
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+        id:
+          type: string
+          format: uuid
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - name
+      - difficulty
+      - id
+      - created_at
+      title: ExerciseRead
+    ExerciseUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        muscle_group:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Muscle Group
+        equipment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipment
+        difficulty:
+          anyOf:
+          - type: string
+            enum:
+            - beginner
+            - intermediate
+            - advanced
+          - type: 'null'
+          title: Difficulty
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+        external_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: External Id
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+      type: object
+      title: ExerciseUpdate
+    FoodLogCreate:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        nutrition_item_id:
+          type: string
+          format: uuid
+          title: Nutrition Item Id
+        quantity_g:
+          anyOf:
+          - type: number
+          - type: string
+          title: Quantity G
+        meal_type:
+          type: string
+          enum:
+          - breakfast
+          - lunch
+          - dinner
+          - snack
+          title: Meal Type
+      type: object
+      required:
+      - user_id
+      - nutrition_item_id
+      - quantity_g
+      - meal_type
+      title: FoodLogCreate
+    FoodLogRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        nutrition_item_id:
+          type: string
+          format: uuid
+          title: Nutrition Item Id
+        quantity_g:
+          type: string
+          title: Quantity G
+        meal_type:
+          type: string
+          enum:
+          - breakfast
+          - lunch
+          - dinner
+          - snack
+          title: Meal Type
+        id:
+          type: string
+          format: uuid
+          title: Id
+        logged_at:
+          type: string
+          format: date-time
+          title: Logged At
+      type: object
+      required:
+      - user_id
+      - nutrition_item_id
+      - quantity_g
+      - meal_type
+      - id
+      - logged_at
+      title: FoodLogRead
+    FoodLogUpdate:
+      properties:
+        quantity_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Quantity G
+        meal_type:
+          anyOf:
+          - type: string
+            enum:
+            - breakfast
+            - lunch
+            - dinner
+            - snack
+          - type: 'null'
+          title: Meal Type
+      type: object
+      title: FoodLogUpdate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HealthProfileCreate:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        disease_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Disease Type
+        severity:
+          anyOf:
+          - type: string
+            enum:
+            - mild
+            - moderate
+            - severe
+          - type: 'null'
+          title: Severity
+        physical_activity_level:
+          anyOf:
+          - type: string
+            enum:
+            - low
+            - moderate
+            - high
+          - type: 'null'
+          title: Physical Activity Level
+        cholesterol_mg_dl:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Cholesterol Mg Dl
+        blood_pressure_mmhg:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Blood Pressure Mmhg
+        glucose_mg_dl:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Glucose Mg Dl
+        dietary_restrictions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dietary Restrictions
+        allergies:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Allergies
+        preferred_cuisine:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Preferred Cuisine
+        weekly_exercise_hours:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Weekly Exercise Hours
+        adherence_to_diet_plan:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Adherence To Diet Plan
+        dietary_nutrient_imbalance_score:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Dietary Nutrient Imbalance Score
+        diet_recommendation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Diet Recommendation
+      type: object
+      required:
+      - user_id
+      title: HealthProfileCreate
+    HealthProfileRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        disease_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Disease Type
+        severity:
+          anyOf:
+          - type: string
+            enum:
+            - mild
+            - moderate
+            - severe
+          - type: 'null'
+          title: Severity
+        physical_activity_level:
+          anyOf:
+          - type: string
+            enum:
+            - low
+            - moderate
+            - high
+          - type: 'null'
+          title: Physical Activity Level
+        cholesterol_mg_dl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cholesterol Mg Dl
+        blood_pressure_mmhg:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Blood Pressure Mmhg
+        glucose_mg_dl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Glucose Mg Dl
+        dietary_restrictions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dietary Restrictions
+        allergies:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Allergies
+        preferred_cuisine:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Preferred Cuisine
+        weekly_exercise_hours:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Weekly Exercise Hours
+        adherence_to_diet_plan:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Adherence To Diet Plan
+        dietary_nutrient_imbalance_score:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dietary Nutrient Imbalance Score
+        diet_recommendation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Diet Recommendation
+        id:
+          type: string
+          format: uuid
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - user_id
+      - id
+      - created_at
+      title: HealthProfileRead
+    HealthProfileUpdate:
+      properties:
+        disease_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Disease Type
+        severity:
+          anyOf:
+          - type: string
+            enum:
+            - mild
+            - moderate
+            - severe
+          - type: 'null'
+          title: Severity
+        physical_activity_level:
+          anyOf:
+          - type: string
+            enum:
+            - low
+            - moderate
+            - high
+          - type: 'null'
+          title: Physical Activity Level
+        cholesterol_mg_dl:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Cholesterol Mg Dl
+        blood_pressure_mmhg:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Blood Pressure Mmhg
+        glucose_mg_dl:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Glucose Mg Dl
+        dietary_restrictions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dietary Restrictions
+        allergies:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Allergies
+        preferred_cuisine:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Preferred Cuisine
+        weekly_exercise_hours:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Weekly Exercise Hours
+        adherence_to_diet_plan:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Adherence To Diet Plan
+        dietary_nutrient_imbalance_score:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Dietary Nutrient Imbalance Score
+        diet_recommendation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Diet Recommendation
+      type: object
+      title: HealthProfileUpdate
+    LoginRequest:
+      properties:
+        email:
+          type: string
+          title: Email
+        password:
+          type: string
+          title: Password
+      type: object
+      required:
+      - email
+      - password
+      title: LoginRequest
+    LoginResponse:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        token_type:
+          type: string
+          title: Token Type
+          default: bearer
+        user_id:
+          type: string
+          title: User Id
+        username:
+          type: string
+          title: Username
+        role:
+          type: string
+          title: Role
+      type: object
+      required:
+      - access_token
+      - user_id
+      - username
+      - role
+      title: LoginResponse
+    MealAnalysisResponse:
+      properties:
+        analysis_id:
+          type: string
+          format: uuid
+          title: Analysis Id
+        detected_foods:
+          items:
+            type: string
+          type: array
+          title: Detected Foods
+        nutrition:
+          $ref: '#/components/schemas/NutritionSummary'
+        balance:
+          type: string
+          title: Balance
+        recommendations:
+          items:
+            type: string
+          type: array
+          title: Recommendations
+        confidence:
+          type: number
+          title: Confidence
+        source:
+          type: string
+          title: Source
+        is_fallback:
+          type: boolean
+          title: Is Fallback
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - analysis_id
+      - detected_foods
+      - nutrition
+      - balance
+      - recommendations
+      - confidence
+      - source
+      - is_fallback
+      title: MealAnalysisResponse
+    NutritionItemCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        meal_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Meal Type
+        calories:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Calories
+        proteins_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Proteins G
+        carbs_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Carbs G
+        fats_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Fats G
+        fiber_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Fiber G
+        sugar_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Sugar G
+        sodium_mg:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Sodium Mg
+        cholesterol_mg:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Cholesterol Mg
+        water_ml:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Water Ml
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+      type: object
+      required:
+      - name
+      title: NutritionItemCreate
+    NutritionItemRead:
+      properties:
+        name:
+          type: string
+          title: Name
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        meal_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Meal Type
+        calories:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Calories
+        proteins_g:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Proteins G
+        carbs_g:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Carbs G
+        fats_g:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fats G
+        fiber_g:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fiber G
+        sugar_g:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sugar G
+        sodium_mg:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sodium Mg
+        cholesterol_mg:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cholesterol Mg
+        water_ml:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Water Ml
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+        id:
+          type: string
+          format: uuid
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - name
+      - id
+      - created_at
+      title: NutritionItemRead
+    NutritionItemUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        meal_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Meal Type
+        calories:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Calories
+        proteins_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Proteins G
+        carbs_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Carbs G
+        fats_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Fats G
+        fiber_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Fiber G
+        sugar_g:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Sugar G
+        sodium_mg:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Sodium Mg
+        cholesterol_mg:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Cholesterol Mg
+        water_ml:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Water Ml
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+      type: object
+      title: NutritionItemUpdate
+    NutritionSummary:
+      properties:
+        calories:
+          type: number
+          title: Calories
+        proteins_g:
+          type: number
+          title: Proteins G
+        carbs_g:
+          type: number
+          title: Carbs G
+        fats_g:
+          type: number
+          title: Fats G
+        is_estimated:
+          type: boolean
+          title: Is Estimated
+      type: object
+      required:
+      - calories
+      - proteins_g
+      - carbs_g
+      - fats_g
+      - is_estimated
+      title: NutritionSummary
+    UserCreate:
+      properties:
+        email:
+          type: string
+          title: Email
+        username:
+          type: string
+          title: Username
+        age:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Age
+        gender:
+          anyOf:
+          - type: string
+            enum:
+            - male
+            - female
+            - other
+          - type: 'null'
+          title: Gender
+        height_cm:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Height Cm
+        weight_kg:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Weight Kg
+        water_intake_liters:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Water Intake Liters
+        workout_frequency:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Workout Frequency
+        fitness_level:
+          anyOf:
+          - type: string
+            enum:
+            - beginner
+            - intermediate
+            - advanced
+          - type: 'null'
+          title: Fitness Level
+          default: beginner
+        goal:
+          type: string
+          enum:
+          - weight_loss
+          - muscle_gain
+          - sleep_improvement
+          - maintenance
+          - general_health
+          title: Goal
+          default: general_health
+        plan:
+          type: string
+          enum:
+          - free
+          - premium
+          - premium_plus
+          title: Plan
+          default: free
+        role:
+          type: string
+          enum:
+          - user
+          - admin
+          title: Role
+          default: user
+        password:
+          type: string
+          title: Password
+      type: object
+      required:
+      - email
+      - username
+      - password
+      title: UserCreate
+    UserGoalCreate:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        goal_type:
+          anyOf:
+          - type: string
+            enum:
+            - weight_loss
+            - muscle_gain
+            - maintenance
+            - sleep_improvement
+            - general_health
+          - type: 'null'
+          title: Goal Type
+        target_value:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Target Value
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+      type: object
+      required:
+      - user_id
+      title: UserGoalCreate
+    UserGoalRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        goal_type:
+          anyOf:
+          - type: string
+            enum:
+            - weight_loss
+            - muscle_gain
+            - maintenance
+            - sleep_improvement
+            - general_health
+          - type: 'null'
+          title: Goal Type
+        target_value:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Target Value
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        id:
+          type: string
+          format: uuid
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - user_id
+      - id
+      - created_at
+      title: UserGoalRead
+    UserGoalUpdate:
+      properties:
+        goal_type:
+          anyOf:
+          - type: string
+            enum:
+            - weight_loss
+            - muscle_gain
+            - maintenance
+            - sleep_improvement
+            - general_health
+          - type: 'null'
+          title: Goal Type
+        target_value:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Target Value
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+      type: object
+      title: UserGoalUpdate
+    UserMetricCreate:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        weight_kg:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Weight Kg
+        body_fat_pct:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Body Fat Pct
+        bmi:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Bmi
+        heart_rate_avg:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Avg
+        heart_rate_max:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Max
+        heart_rate_rest:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Rest
+        steps:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Steps
+        active_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Active Minutes
+        calories_burned:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Calories Burned
+        sleep_hours:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Sleep Hours
+        recorded_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Recorded At
+      type: object
+      required:
+      - user_id
+      title: UserMetricCreate
+    UserMetricRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        weight_kg:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Weight Kg
+        body_fat_pct:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Body Fat Pct
+        bmi:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bmi
+        heart_rate_avg:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Avg
+        heart_rate_max:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Max
+        heart_rate_rest:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Rest
+        steps:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Steps
+        active_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Active Minutes
+        calories_burned:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Calories Burned
+        sleep_hours:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sleep Hours
+        id:
+          type: string
+          format: uuid
+          title: Id
+        recorded_at:
+          type: string
+          format: date-time
+          title: Recorded At
+      type: object
+      required:
+      - user_id
+      - id
+      - recorded_at
+      title: UserMetricRead
+    UserMetricUpdate:
+      properties:
+        recorded_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Recorded At
+        weight_kg:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Weight Kg
+        body_fat_pct:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Body Fat Pct
+        bmi:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Bmi
+        heart_rate_avg:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Avg
+        heart_rate_max:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Max
+        heart_rate_rest:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Heart Rate Rest
+        steps:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Steps
+        active_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Active Minutes
+        calories_burned:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Calories Burned
+        sleep_hours:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Sleep Hours
+      type: object
+      title: UserMetricUpdate
+    UserRead:
+      properties:
+        email:
+          type: string
+          title: Email
+        username:
+          type: string
+          title: Username
+        age:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Age
+        gender:
+          anyOf:
+          - type: string
+            enum:
+            - male
+            - female
+            - other
+          - type: 'null'
+          title: Gender
+        height_cm:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Height Cm
+        weight_kg:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Weight Kg
+        water_intake_liters:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Water Intake Liters
+        workout_frequency:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Workout Frequency
+        fitness_level:
+          anyOf:
+          - type: string
+            enum:
+            - beginner
+            - intermediate
+            - advanced
+          - type: 'null'
+          title: Fitness Level
+          default: beginner
+        goal:
+          type: string
+          enum:
+          - weight_loss
+          - muscle_gain
+          - sleep_improvement
+          - maintenance
+          - general_health
+          title: Goal
+          default: general_health
+        plan:
+          type: string
+          enum:
+          - free
+          - premium
+          - premium_plus
+          title: Plan
+          default: free
+        role:
+          type: string
+          enum:
+          - user
+          - admin
+          title: Role
+          default: user
+        id:
+          type: string
+          format: uuid
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - email
+      - username
+      - id
+      - created_at
+      - updated_at
+      title: UserRead
+    UserUpdate:
+      properties:
+        email:
+          anyOf:
+          - type: string
+            format: email
+          - type: 'null'
+          title: Email
+        username:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Username
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+        age:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Age
+        gender:
+          anyOf:
+          - type: string
+            enum:
+            - male
+            - female
+            - other
+          - type: 'null'
+          title: Gender
+        height_cm:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Height Cm
+        weight_kg:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Weight Kg
+        water_intake_liters:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Water Intake Liters
+        workout_frequency:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Workout Frequency
+        fitness_level:
+          anyOf:
+          - type: string
+            enum:
+            - beginner
+            - intermediate
+            - advanced
+          - type: 'null'
+          title: Fitness Level
+        goal:
+          anyOf:
+          - type: string
+            enum:
+            - weight_loss
+            - muscle_gain
+            - maintenance
+            - sleep_improvement
+            - general_health
+          - type: 'null'
+          title: Goal
+        plan:
+          anyOf:
+          - type: string
+            enum:
+            - free
+            - premium
+            - premium_plus
+          - type: 'null'
+          title: Plan
+        role:
+          anyOf:
+          - type: string
+            enum:
+            - user
+            - admin
+          - type: 'null'
+          title: Role
+      type: object
+      title: UserUpdate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WorkoutLogCreate:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        exercise_id:
+          type: string
+          format: uuid
+          title: Exercise Id
+        duration_min:
+          type: integer
+          title: Duration Min
+        sets:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Sets
+        reps:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Reps
+        calories_burned:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Calories Burned
+      type: object
+      required:
+      - user_id
+      - exercise_id
+      - duration_min
+      title: WorkoutLogCreate
+    WorkoutLogRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        exercise_id:
+          type: string
+          format: uuid
+          title: Exercise Id
+        duration_min:
+          type: integer
+          title: Duration Min
+        sets:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Sets
+        reps:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Reps
+        calories_burned:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Calories Burned
+        id:
+          type: string
+          format: uuid
+          title: Id
+        logged_at:
+          type: string
+          format: date-time
+          title: Logged At
+      type: object
+      required:
+      - user_id
+      - exercise_id
+      - duration_min
+      - id
+      - logged_at
+      title: WorkoutLogRead
+    WorkoutLogUpdate:
+      properties:
+        duration_min:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Duration Min
+        sets:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Sets
+        reps:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Reps
+        calories_burned:
+          anyOf:
+          - type: number
+          - type: string
+          - type: 'null'
+          title: Calories Burned
+      type: object
+      title: WorkoutLogUpdate
+

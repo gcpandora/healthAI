@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WF-01 — Dashboard | HealthAI Coach Wireframes</title>
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    .kpi5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-bottom: 12px; }
+    .kpi3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
+    .kpi2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .kpi1 { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+<!-- ── CHROME ── -->
+<div class="wf-page-header">
+  <div>
+    <h1>WF-01 — Dashboard principal</h1>
+    <span class="meta">Vue après login · KPI + graphiques + export CSV</span>
+  </div>
+  <span class="meta">MSPR TPRE502 · Wireframe basse-fidélité</span>
+</div>
+
+<div class="wf-filenav">
+  <a href="01-dashboard.html" class="active">01 Dashboard</a>
+  <span class="wf-filenav-sep">|</span>
+  <a href="02-nutrition-upload.html">02 Nutrition Upload</a>
+  <a href="03-nutrition-resultat.html">03 Nutrition Résultat</a>
+  <a href="04-nutrition-degrade.html">04 Nutrition Dégradé</a>
+  <span class="wf-filenav-sep">|</span>
+  <a href="05-fitness-formulaire.html">05 Fitness Formulaire</a>
+  <a href="06-fitness-resultat.html">06 Fitness Résultat</a>
+  <a href="07-fitness-skeleton.html">07 Fitness Skeleton</a>
+</div>
+
+<!-- ── 3 BREAKPOINTS ── -->
+<div class="showcase">
+
+  <!-- ══════════ DESKTOP ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">🖥</span>Desktop — ≥ 1024 px</div>
+    <div class="wf-app" style="min-height:700px">
+
+      <!-- Sidebar desktop -->
+      <nav class="wf-sidebar" aria-label="Navigation principale">
+        <div class="wf-brand">HealthAI <button class="wf-brand-toggle" tabindex="-1">←</button></div>
+        <div class="wf-nav-item active" aria-current="page"><span class="wf-nav-icon">📊</span>Dashboard</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">👥</span>Users</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">💪</span>Exercises</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🥗</span>Nutrition</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🤖</span>Analyse IA</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🏋️</span>Fitness IA</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">✓</span>Data Quality</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">👤</span>Mon compte</div>
+        <div class="wf-sidebar-footer">v1.0.0</div>
+      </nav>
+
+      <!-- Content desktop -->
+      <main class="wf-content" aria-label="Contenu principal">
+        <div class="wf-page-top">
+          <div>
+            <div class="wf-h1">Dashboard</div>
+            <div class="wf-subtitle">Dernière mise à jour : 17/05/2026</div>
+          </div>
+          <button class="wf-btn wf-btn-primary show-focus" role="button" aria-label="Exporter les données en CSV">
+            📊 Export Data (CSV)
+          </button>
+        </div>
+
+        <!-- KPI Cards — 5 colonnes -->
+        <div class="kpi5">
+          <div class="wf-kpi"><span class="wf-kpi-icon">👥</span><span class="wf-kpi-value">1 247</span><span class="wf-kpi-label">Total Users</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">💪</span><span class="wf-kpi-value">873</span><span class="wf-kpi-label">Exercises</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">🍎</span><span class="wf-kpi-value">3 581</span><span class="wf-kpi-label">Nutrition Items</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">⚖️</span><span class="wf-kpi-value">74.3 kg</span><span class="wf-kpi-label">Poids moyen</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">📏</span><span class="wf-kpi-value">171 cm</span><span class="wf-kpi-label">Taille moyenne</span></div>
+        </div>
+
+        <!-- Tableaux détail — 3 colonnes -->
+        <div class="kpi3">
+          <div class="wf-card">
+            <div class="wf-h2">📊 Users by Plan</div>
+            <div class="wf-table-row"><span>Free</span><span style="font-weight:700;color:#2d3748">423</span></div>
+            <div class="wf-table-row"><span>Premium</span><span style="font-weight:700;color:#2d3748">618</span></div>
+            <div class="wf-table-row"><span>Enterprise</span><span style="font-weight:700;color:#2d3748">206</span></div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-h2">👨‍👩 Users by Gender</div>
+            <div class="wf-table-row"><span>Male</span><span style="font-weight:700;color:#2d3748">694</span></div>
+            <div class="wf-table-row"><span>Female</span><span style="font-weight:700;color:#2d3748">521</span></div>
+            <div class="wf-table-row"><span>Non précisé</span><span style="font-weight:700;color:#2d3748">32</span></div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-h2">📈 Quick Stats</div>
+            <div class="wf-table-row"><span>Active Users</span><span style="font-weight:700">1 247</span></div>
+            <div class="wf-table-row"><span>Total Resources</span><span style="font-weight:700">4 454</span></div>
+            <div class="wf-table-row"><span>System Status</span><span style="font-weight:700;color:#16a34a">✓ Operational</span></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════ TABLET ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">📱</span>Tablette — 768 px</div>
+    <div class="wf-app" style="min-height:700px">
+
+      <!-- Sidebar mini (icônes seules) -->
+      <nav class="wf-sidebar-mini" aria-label="Navigation principale">
+        <div style="color:#fff;font-size:11px;font-weight:700;margin-bottom:12px;text-align:center">AI</div>
+        <div class="wf-nav-item active" style="padding:8px;flex-direction:column;gap:2px;font-size:9px;align-items:center">📊<br><span style="font-size:8px">DB</span></div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">👥</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">💪</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🥗</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🤖</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🏋️</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">✓</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">👤</div>
+      </nav>
+
+      <!-- Content tablet -->
+      <main class="wf-content">
+        <div class="wf-page-top">
+          <div>
+            <div class="wf-h1">Dashboard</div>
+            <div class="wf-subtitle">17/05/2026</div>
+          </div>
+          <button class="wf-btn wf-btn-primary wf-btn-sm">📊 Export CSV</button>
+        </div>
+
+        <!-- KPI — 3 colonnes sur tablette -->
+        <div class="kpi3">
+          <div class="wf-kpi"><span class="wf-kpi-icon">👥</span><span class="wf-kpi-value" style="font-size:18px">1 247</span><span class="wf-kpi-label">Users</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">💪</span><span class="wf-kpi-value" style="font-size:18px">873</span><span class="wf-kpi-label">Exercises</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">🍎</span><span class="wf-kpi-value" style="font-size:18px">3 581</span><span class="wf-kpi-label">Nutrition</span></div>
+        </div>
+        <div class="kpi2">
+          <div class="wf-kpi"><span class="wf-kpi-icon">⚖️</span><span class="wf-kpi-value" style="font-size:18px">74.3 kg</span><span class="wf-kpi-label">Poids moyen</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">📏</span><span class="wf-kpi-value" style="font-size:18px">171 cm</span><span class="wf-kpi-label">Taille</span></div>
+        </div>
+
+        <!-- Tableaux — 2 colonnes -->
+        <div class="kpi2">
+          <div class="wf-card">
+            <div class="wf-h2">📊 By Plan</div>
+            <div class="wf-table-row"><span>Free</span><span style="font-weight:700">423</span></div>
+            <div class="wf-table-row"><span>Premium</span><span style="font-weight:700">618</span></div>
+            <div class="wf-table-row"><span>Enterprise</span><span style="font-weight:700">206</span></div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-h2">👨‍👩 By Gender</div>
+            <div class="wf-table-row"><span>Male</span><span style="font-weight:700">694</span></div>
+            <div class="wf-table-row"><span>Female</span><span style="font-weight:700">521</span></div>
+            <div class="wf-table-row"><span>N/A</span><span style="font-weight:700">32</span></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════ MOBILE ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">📱</span>Mobile — 375 px</div>
+    <div style="min-height:700px;background:#f8fafc;">
+
+      <!-- Header mobile -->
+      <header class="wf-mobile-header">
+        <span class="wf-mobile-brand">HealthAI</span>
+        <div class="wf-hamburger" role="button" aria-label="Ouvrir le menu" aria-expanded="false" tabindex="0">
+          <span></span><span></span><span></span>
+        </div>
+      </header>
+
+      <main style="padding:14px;">
+        <div class="wf-h1" style="margin-bottom:12px">Dashboard</div>
+
+        <!-- KPI — 2 colonnes sur mobile -->
+        <div class="kpi2" style="margin-bottom:10px">
+          <div class="wf-kpi"><span class="wf-kpi-icon">👥</span><span class="wf-kpi-value" style="font-size:16px">1 247</span><span class="wf-kpi-label">Users</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">💪</span><span class="wf-kpi-value" style="font-size:16px">873</span><span class="wf-kpi-label">Exercises</span></div>
+        </div>
+        <div class="kpi2" style="margin-bottom:10px">
+          <div class="wf-kpi"><span class="wf-kpi-icon">🍎</span><span class="wf-kpi-value" style="font-size:16px">3 581</span><span class="wf-kpi-label">Nutrition</span></div>
+          <div class="wf-kpi"><span class="wf-kpi-icon">⚖️</span><span class="wf-kpi-value" style="font-size:16px">74.3</span><span class="wf-kpi-label">kg moy.</span></div>
+        </div>
+
+        <!-- Tableaux — empilés -->
+        <div class="wf-card mb-md">
+          <div class="wf-h2">📊 Users by Plan</div>
+          <div class="wf-table-row"><span>Free</span><span style="font-weight:700">423</span></div>
+          <div class="wf-table-row"><span>Premium</span><span style="font-weight:700">618</span></div>
+        </div>
+        <div class="wf-card mb-md">
+          <div class="wf-h2">👨‍👩 By Gender</div>
+          <div class="wf-table-row"><span>Male</span><span style="font-weight:700">694</span></div>
+          <div class="wf-table-row"><span>Female</span><span style="font-weight:700">521</span></div>
+        </div>
+
+        <!-- Bouton export pleine largeur -->
+        <button class="wf-btn wf-btn-primary wf-btn-full" aria-label="Exporter les données en CSV">📊 Export CSV</button>
+      </main>
+    </div>
+  </div>
+
+</div><!-- /showcase -->
+
+<!-- ── ACCESSIBILITÉ ── -->
+<div class="wf-a11y-bar">
+  <h3>♿ Critères accessibilité</h3>
+  <span class="wf-a11y-chip">Focus clavier visible (outline bleu 3px)</span>
+  <span class="wf-a11y-chip">aria-current="page" sur l'élément actif</span>
+  <span class="wf-a11y-chip">Hamburger : aria-expanded + aria-label</span>
+  <span class="wf-a11y-chip">Statut système textuel ET couleur</span>
+  <span class="wf-a11y-chip">Contraste AA — texte sombre sur fond clair</span>
+  <span class="wf-a11y-chip">Landmarks nav + main + header</span>
+</div>
+
+</body>
+</html>

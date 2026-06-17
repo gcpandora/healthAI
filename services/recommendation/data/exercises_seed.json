@@ -1,0 +1,222 @@
+[
+  {
+    "name": "Course à pied",
+    "workout_type": "Cardio",
+    "difficulty": 1,
+    "equipment": [],
+    "muscles_targeted": ["jambes", "cardiovasculaire"],
+    "description": "Course à allure modérée, idéale pour brûler des calories et améliorer l'endurance.",
+    "duration_minutes": 30,
+    "calories_per_minute": 10
+  },
+  {
+    "name": "Vélo stationnaire",
+    "workout_type": "Cardio",
+    "difficulty": 1,
+    "equipment": ["vélo"],
+    "muscles_targeted": ["jambes", "cardiovasculaire"],
+    "description": "Pédalage à intensité modérée, faible impact articulaire.",
+    "duration_minutes": 30,
+    "calories_per_minute": 9
+  },
+  {
+    "name": "Corde à sauter",
+    "workout_type": "Cardio",
+    "difficulty": 2,
+    "equipment": ["corde"],
+    "muscles_targeted": ["mollets", "cardiovasculaire", "épaules"],
+    "description": "Exercice cardio à haute intensité, améliore la coordination.",
+    "duration_minutes": 15,
+    "calories_per_minute": 13
+  },
+  {
+    "name": "Rameur",
+    "workout_type": "Cardio",
+    "difficulty": 2,
+    "equipment": ["rameur"],
+    "muscles_targeted": ["dos", "bras", "jambes", "cardiovasculaire"],
+    "description": "Cardio complet sollicitant le haut et le bas du corps.",
+    "duration_minutes": 20,
+    "calories_per_minute": 11
+  },
+  {
+    "name": "Marche rapide",
+    "workout_type": "Cardio",
+    "difficulty": 1,
+    "equipment": [],
+    "muscles_targeted": ["jambes", "cardiovasculaire"],
+    "description": "Marche à allure soutenue, parfait pour les débutants.",
+    "duration_minutes": 45,
+    "calories_per_minute": 6
+  },
+  {
+    "name": "Développé couché",
+    "workout_type": "Strength",
+    "difficulty": 2,
+    "equipment": ["barre", "banc"],
+    "muscles_targeted": ["pectoraux", "triceps", "épaules"],
+    "description": "Exercice de base pour le développement de la poitrine.",
+    "duration_minutes": 40,
+    "calories_per_minute": 7
+  },
+  {
+    "name": "Squat barre",
+    "workout_type": "Strength",
+    "difficulty": 2,
+    "equipment": ["barre"],
+    "muscles_targeted": ["quadriceps", "fessiers", "ischio-jambiers"],
+    "description": "Le roi des exercices de jambes, renforce tout le bas du corps.",
+    "duration_minutes": 40,
+    "calories_per_minute": 8
+  },
+  {
+    "name": "Soulevé de terre",
+    "workout_type": "Strength",
+    "difficulty": 3,
+    "equipment": ["barre"],
+    "muscles_targeted": ["dos", "fessiers", "ischio-jambiers", "trapèzes"],
+    "description": "Exercice polyarticulaire complet, requiert une bonne technique.",
+    "duration_minutes": 40,
+    "calories_per_minute": 8
+  },
+  {
+    "name": "Tractions",
+    "workout_type": "Strength",
+    "difficulty": 2,
+    "equipment": ["barre de traction"],
+    "muscles_targeted": ["dos", "biceps", "core"],
+    "description": "Exercice au poids du corps pour le dos et les bras.",
+    "duration_minutes": 30,
+    "calories_per_minute": 7
+  },
+  {
+    "name": "Développé militaire",
+    "workout_type": "Strength",
+    "difficulty": 2,
+    "equipment": ["haltères"],
+    "muscles_targeted": ["épaules", "triceps", "trapèzes"],
+    "description": "Renforcement des épaules debout ou assis.",
+    "duration_minutes": 35,
+    "calories_per_minute": 6
+  },
+  {
+    "name": "Pompes",
+    "workout_type": "Strength",
+    "difficulty": 1,
+    "equipment": [],
+    "muscles_targeted": ["pectoraux", "triceps", "épaules", "core"],
+    "description": "Exercice au poids du corps polyvalent, sans équipement.",
+    "duration_minutes": 20,
+    "calories_per_minute": 7
+  },
+  {
+    "name": "Burpees",
+    "workout_type": "HIIT",
+    "difficulty": 3,
+    "equipment": [],
+    "muscles_targeted": ["corps entier", "cardiovasculaire"],
+    "description": "Exercice full-body explosif, très efficace pour brûler des calories.",
+    "duration_minutes": 20,
+    "calories_per_minute": 15
+  },
+  {
+    "name": "Box Jumps",
+    "workout_type": "HIIT",
+    "difficulty": 3,
+    "equipment": ["box"],
+    "muscles_targeted": ["quadriceps", "fessiers", "mollets"],
+    "description": "Sauts pliométriques sur une box, développe la puissance.",
+    "duration_minutes": 20,
+    "calories_per_minute": 14
+  },
+  {
+    "name": "Mountain Climbers",
+    "workout_type": "HIIT",
+    "difficulty": 2,
+    "equipment": [],
+    "muscles_targeted": ["core", "épaules", "jambes"],
+    "description": "Exercice dynamique au sol, renforce le core et le cardio.",
+    "duration_minutes": 15,
+    "calories_per_minute": 13
+  },
+  {
+    "name": "Intervalles de sprint",
+    "workout_type": "HIIT",
+    "difficulty": 3,
+    "equipment": [],
+    "muscles_targeted": ["jambes", "cardiovasculaire"],
+    "description": "Alternance sprint/récupération, maximise la dépense calorique.",
+    "duration_minutes": 20,
+    "calories_per_minute": 16
+  },
+  {
+    "name": "Kettlebell Swings",
+    "workout_type": "HIIT",
+    "difficulty": 2,
+    "equipment": ["kettlebell"],
+    "muscles_targeted": ["fessiers", "ischio-jambiers", "core", "épaules"],
+    "description": "Mouvement balistique complet, cardio et force combinés.",
+    "duration_minutes": 20,
+    "calories_per_minute": 12
+  },
+  {
+    "name": "Jumping Jacks",
+    "workout_type": "HIIT",
+    "difficulty": 1,
+    "equipment": [],
+    "muscles_targeted": ["corps entier", "cardiovasculaire"],
+    "description": "Exercice d'échauffement et cardio léger, parfait pour débuter.",
+    "duration_minutes": 15,
+    "calories_per_minute": 10
+  },
+  {
+    "name": "Chien tête en bas",
+    "workout_type": "Yoga",
+    "difficulty": 1,
+    "equipment": ["tapis"],
+    "muscles_targeted": ["ischio-jambiers", "mollets", "épaules", "dos"],
+    "description": "Posture fondamentale du yoga, étire tout le corps.",
+    "duration_minutes": 60,
+    "calories_per_minute": 3
+  },
+  {
+    "name": "Guerrier I",
+    "workout_type": "Yoga",
+    "difficulty": 1,
+    "equipment": ["tapis"],
+    "muscles_targeted": ["quadriceps", "fessiers", "épaules"],
+    "description": "Posture debout qui renforce les jambes et ouvre les hanches.",
+    "duration_minutes": 60,
+    "calories_per_minute": 3
+  },
+  {
+    "name": "Posture de l'arbre",
+    "workout_type": "Yoga",
+    "difficulty": 2,
+    "equipment": ["tapis"],
+    "muscles_targeted": ["chevilles", "mollets", "core"],
+    "description": "Posture d'équilibre qui améliore la concentration et la stabilité.",
+    "duration_minutes": 60,
+    "calories_per_minute": 3
+  },
+  {
+    "name": "Posture de l'enfant",
+    "workout_type": "Yoga",
+    "difficulty": 1,
+    "equipment": ["tapis"],
+    "muscles_targeted": ["dos", "hanches", "chevilles"],
+    "description": "Posture de repos et de récupération, soulage la tension dorsale.",
+    "duration_minutes": 60,
+    "calories_per_minute": 2
+  },
+  {
+    "name": "Salutation au soleil",
+    "workout_type": "Yoga",
+    "difficulty": 2,
+    "equipment": ["tapis"],
+    "muscles_targeted": ["corps entier"],
+    "description": "Enchaînement de 12 postures, réchauffe le corps et améliore la flexibilité.",
+    "duration_minutes": 60,
+    "calories_per_minute": 4
+  }
+]

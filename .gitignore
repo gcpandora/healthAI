@@ -1,0 +1,72 @@
+# ════════════════════════════════════════════════
+# .gitignore — HealthAI Coach
+# ════════════════════════════════════════════════
+
+# ─── Secrets & environnement ─────────────────────
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+secrets/
+.env.example
+
+# ─── Python ──────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# ─── Node / Frontend ─────────────────────────────
+node_modules/
+dist/
+.next/
+.nuxt/
+.output/
+*.local
+
+# ─── Docker ──────────────────────────────────────
+# (volumes Docker sont gérés par Docker, pas Git)
+
+# ─── Données brutes & datasets ───────────────────
+# Les datasets Kaggle ne se commitent pas (trop lourds)
+services/etl/data/raw/
+services/etl/data/processed/
+*.csv
+*.xlsx
+!database/seeds/*.csv   # Exception : seeds légères autorisées
+
+# ─── Logs ────────────────────────────────────────
+*.log
+logs/
+
+# ─── IDEs & OS ───────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ─── Datasets ETL & Environnement virtuel ETL ────
+# Datasets ETL (fichiers volumineux, ne pas pousser sur GitHub)
+services/etl/data/
+
+# Environnement virtuel Python
+services/etl/venv/

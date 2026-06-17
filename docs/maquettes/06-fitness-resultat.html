@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WF-06 — Fitness Résultat | HealthAI Coach Wireframes</title>
+  <link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+
+<div class="wf-page-header">
+  <div>
+    <h1>WF-06 — Recommandations fitness · Résultat</h1>
+    <span class="meta">Résumé · stats · séances d'entraînement · exercices détaillés</span>
+  </div>
+  <span class="meta">MSPR TPRE502 · Wireframe basse-fidélité</span>
+</div>
+
+<div class="wf-filenav">
+  <a href="01-dashboard.html">01 Dashboard</a>
+  <span class="wf-filenav-sep">|</span>
+  <a href="02-nutrition-upload.html">02 Nutrition Upload</a>
+  <a href="03-nutrition-resultat.html">03 Nutrition Résultat</a>
+  <a href="04-nutrition-degrade.html">04 Nutrition Dégradé</a>
+  <span class="wf-filenav-sep">|</span>
+  <a href="05-fitness-formulaire.html">05 Fitness Formulaire</a>
+  <a href="06-fitness-resultat.html" class="active">06 Fitness Résultat</a>
+  <a href="07-fitness-skeleton.html">07 Fitness Skeleton</a>
+</div>
+
+<div class="showcase">
+
+  <!-- ══════════ DESKTOP ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">🖥</span>Desktop — ≥ 1024 px</div>
+    <div class="wf-app" style="min-height:920px">
+
+      <nav class="wf-sidebar" aria-label="Navigation principale">
+        <div class="wf-brand">HealthAI <button class="wf-brand-toggle" tabindex="-1">←</button></div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">📊</span>Dashboard</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">👥</span>Users</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">💪</span>Exercises</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🥗</span>Nutrition</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🤖</span>Analyse IA</div>
+        <div class="wf-nav-item active" aria-current="page"><span class="wf-nav-icon">🏋️</span>Fitness IA</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">✓</span>Data Quality</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">👤</span>Mon compte</div>
+        <div class="wf-sidebar-footer">v1.0.0</div>
+      </nav>
+
+      <main class="wf-content">
+        <header style="margin-bottom:14px">
+          <div class="wf-h1">Recommandations fitness IA</div>
+          <div class="wf-subtitle">Renseignez votre profil pour recevoir un programme d'entraînement personnalisé.</div>
+        </header>
+
+        <div class="wf-row" style="gap:16px;align-items:flex-start">
+
+          <!-- Gauche : formulaire rempli (compact) -->
+          <section style="flex:0 0 220px" aria-labelledby="form-d-title">
+            <div class="wf-h2" id="form-d-title">Votre profil</div>
+            <div class="wf-card" style="font-size:11px;padding:10px">
+              <div class="wf-table-row"><span style="color:#6b7280">Objectif</span><strong>Perte de poids</strong></div>
+              <div class="wf-table-row"><span style="color:#6b7280">Âge</span><strong>28 ans</strong></div>
+              <div class="wf-table-row"><span style="color:#6b7280">Genre</span><strong>Homme</strong></div>
+              <div class="wf-table-row"><span style="color:#6b7280">Poids</span><strong>82 kg</strong></div>
+              <div class="wf-table-row"><span style="color:#6b7280">Taille</span><strong>1.78 m</strong></div>
+              <div class="wf-table-row"><span style="color:#6b7280">Niveau</span><strong>Intermédiaire</strong></div>
+              <div class="wf-table-row"><span style="color:#6b7280">Limitations</span><strong>Genoux</strong></div>
+              <div class="wf-table-row"><span style="color:#6b7280">Équipement</span><strong>Haltères, Tapis</strong></div>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:10px;flex-direction:column">
+              <button class="wf-btn wf-btn-primary wf-btn-sm show-focus">💪 Générer à nouveau</button>
+              <button class="wf-btn wf-btn-sm">Réinitialiser</button>
+            </div>
+          </section>
+
+          <!-- Droite : Programme généré -->
+          <section style="flex:1" aria-labelledby="program-title">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:6px;flex-wrap:wrap">
+              <div class="wf-h2" id="program-title" style="margin:0">Votre programme personnalisé</div>
+              <!-- Pas de fallback badge (état normal) -->
+            </div>
+
+            <!-- Résumé -->
+            <div class="wf-summary-box" style="margin-bottom:12px">
+              Programme de 8 semaines axé sur la perte de poids avec préservation musculaire.
+              Adapté à votre limitation genou : exercices à faible impact articulaire privilégiés.
+            </div>
+
+            <!-- Stats -->
+            <div class="wf-stat-grid" style="margin-bottom:14px">
+              <div class="wf-stat-card">
+                <span class="wf-stat-value">3</span>
+                <span class="wf-stat-label">séances/semaine</span>
+              </div>
+              <div class="wf-stat-card">
+                <span class="wf-stat-value">~1 800</span>
+                <span class="wf-stat-label">kcal/semaine est.</span>
+              </div>
+              <div class="wf-stat-card">
+                <span class="wf-stat-value">8</span>
+                <span class="wf-stat-label">semaines</span>
+              </div>
+            </div>
+
+            <!-- Séances -->
+            <div aria-label="Programme d'entraînement">
+
+              <!-- Séance 1 -->
+              <article class="wf-session-card" aria-label="Séance 1">
+                <div class="wf-session-hd">
+                  <span class="wf-session-num" aria-hidden="true">1</span>
+                  <div>
+                    <div style="font-size:12px;font-weight:600">Full Body — Haltères</div>
+                    <div style="font-size:10px;color:#718096">⏱ 45 min · Intensité : Modérée</div>
+                  </div>
+                </div>
+                <ul aria-label="Exercices de la séance 1" style="list-style:none">
+                  <li class="wf-ex-item">
+                    <span>Squat gobelet</span>
+                    <span class="wf-ex-meta">3×15 · repos 60s</span>
+                  </li>
+                  <li class="wf-ex-item">
+                    <span>Pompes inclinées</span>
+                    <span class="wf-ex-meta">3×12 · repos 60s</span>
+                  </li>
+                  <li class="wf-ex-item">
+                    <span>Rowing haltère</span>
+                    <span class="wf-ex-meta">3×12 · repos 60s</span>
+                  </li>
+                  <li class="wf-ex-item">
+                    <span>Gainage plancher</span>
+                    <span class="wf-ex-meta">3×30s · repos 30s</span>
+                  </li>
+                </ul>
+                <div style="font-size:10px;color:#6b7280;margin-top:6px;padding-top:4px;border-top:1px solid #f1f5f9">
+                  💡 Évitez la flexion profonde du genou — arrêtez à 90°
+                </div>
+              </article>
+
+              <!-- Séance 2 -->
+              <article class="wf-session-card" aria-label="Séance 2">
+                <div class="wf-session-hd">
+                  <span class="wf-session-num" aria-hidden="true">2</span>
+                  <div>
+                    <div style="font-size:12px;font-weight:600">Cardio léger — Tapis yoga</div>
+                    <div style="font-size:10px;color:#718096">⏱ 30 min · Intensité : Légère</div>
+                  </div>
+                </div>
+                <ul aria-label="Exercices de la séance 2" style="list-style:none">
+                  <li class="wf-ex-item"><span>Marche sur place</span><span class="wf-ex-meta">10 min</span></li>
+                  <li class="wf-ex-item"><span>Étirements dynamiques</span><span class="wf-ex-meta">5 min</span></li>
+                  <li class="wf-ex-item"><span>Yoga — Salutation soleil</span><span class="wf-ex-meta">15 min</span></li>
+                </ul>
+              </article>
+
+              <!-- Séance 3 (résumé) -->
+              <article class="wf-session-card" aria-label="Séance 3">
+                <div class="wf-session-hd">
+                  <span class="wf-session-num" aria-hidden="true">3</span>
+                  <div>
+                    <div style="font-size:12px;font-weight:600">Upper Body — Haltères</div>
+                    <div style="font-size:10px;color:#718096">⏱ 40 min · Intensité : Modérée</div>
+                  </div>
+                </div>
+                <ul aria-label="Exercices de la séance 3" style="list-style:none">
+                  <li class="wf-ex-item"><span>Développé épaules</span><span class="wf-ex-meta">3×12</span></li>
+                  <li class="wf-ex-item"><span>Curl biceps</span><span class="wf-ex-meta">3×12</span></li>
+                  <li class="wf-ex-item"><span>Triceps extension</span><span class="wf-ex-meta">3×12</span></li>
+                </ul>
+              </article>
+            </div>
+
+            <div style="font-size:10px;color:#718096;margin-top:8px">
+              ID : <code>rec-9a8b7c6d-…</code> · stocké dans MongoDB
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════ TABLET ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">📱</span>Tablette — 768 px</div>
+    <div class="wf-app" style="min-height:920px">
+      <nav class="wf-sidebar-mini" aria-label="Navigation principale">
+        <div style="color:#fff;font-size:11px;font-weight:700;margin-bottom:12px;text-align:center">AI</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">📊</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">👥</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">💪</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🥗</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🤖</div>
+        <div class="wf-nav-item active" style="padding:8px;justify-content:center" aria-current="page">🏋️</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">✓</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">👤</div>
+      </nav>
+
+      <main class="wf-content">
+        <div class="wf-h1" style="margin-bottom:8px">Recommandations fitness IA</div>
+
+        <!-- Profil résumé horizontal -->
+        <div class="wf-card" style="margin-bottom:10px;font-size:10px;display:flex;gap:12px;flex-wrap:wrap">
+          <span>Objectif : <strong>Perte de poids</strong></span>
+          <span>Âge : <strong>28</strong></span>
+          <span>82 kg / 1.78 m</span>
+          <span>Niveau : <strong>Intermédiaire</strong></span>
+          <span>⚠ Genou</span>
+        </div>
+
+        <!-- Programme -->
+        <section aria-labelledby="prog-t">
+          <div class="wf-h2" id="prog-t">Votre programme personnalisé</div>
+          <div class="wf-summary-box" style="font-size:10px;margin-bottom:10px">
+            8 semaines · impact faible genou · haltères + tapis yoga
+          </div>
+
+          <div class="wf-stat-grid" style="margin-bottom:12px">
+            <div class="wf-stat-card"><span class="wf-stat-value" style="font-size:16px">3</span><span class="wf-stat-label">séances/sem.</span></div>
+            <div class="wf-stat-card"><span class="wf-stat-value" style="font-size:16px">~1800</span><span class="wf-stat-label">kcal/sem.</span></div>
+            <div class="wf-stat-card"><span class="wf-stat-value" style="font-size:16px">8</span><span class="wf-stat-label">semaines</span></div>
+          </div>
+
+          <article class="wf-session-card" aria-label="Séance 1">
+            <div class="wf-session-hd">
+              <span class="wf-session-num">1</span>
+              <div>
+                <div style="font-size:11px;font-weight:600">Full Body — Haltères</div>
+                <div style="font-size:10px;color:#718096">45 min · Modérée</div>
+              </div>
+            </div>
+            <ul style="list-style:none">
+              <li class="wf-ex-item"><span>Squat gobelet</span><span class="wf-ex-meta">3×15</span></li>
+              <li class="wf-ex-item"><span>Pompes inclinées</span><span class="wf-ex-meta">3×12</span></li>
+              <li class="wf-ex-item"><span>Rowing haltère</span><span class="wf-ex-meta">3×12</span></li>
+            </ul>
+          </article>
+
+          <article class="wf-session-card" aria-label="Séance 2">
+            <div class="wf-session-hd">
+              <span class="wf-session-num">2</span>
+              <div><div style="font-size:11px;font-weight:600">Cardio léger</div><div style="font-size:10px;color:#718096">30 min · Légère</div></div>
+            </div>
+            <ul style="list-style:none">
+              <li class="wf-ex-item"><span>Marche / yoga</span><span class="wf-ex-meta">30 min</span></li>
+            </ul>
+          </article>
+
+          <article class="wf-session-card" aria-label="Séance 3">
+            <div class="wf-session-hd">
+              <span class="wf-session-num">3</span>
+              <div><div style="font-size:11px;font-weight:600">Upper Body</div><div style="font-size:10px;color:#718096">40 min · Modérée</div></div>
+            </div>
+            <ul style="list-style:none">
+              <li class="wf-ex-item"><span>Développé + Curl + Triceps</span><span class="wf-ex-meta">3×12 chacun</span></li>
+            </ul>
+          </article>
+        </section>
+
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="wf-btn wf-btn-primary wf-btn-sm">💪 Générer à nouveau</button>
+          <button class="wf-btn wf-btn-sm">Réinitialiser</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════ MOBILE ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">📱</span>Mobile — 375 px</div>
+    <div style="min-height:920px;background:#f8fafc;">
+      <header class="wf-mobile-header">
+        <span class="wf-mobile-brand">Mon programme</span>
+        <div class="wf-hamburger" role="button" aria-label="Menu" tabindex="0"><span></span><span></span><span></span></div>
+      </header>
+
+      <main style="padding:12px;">
+        <div class="wf-h1" style="font-size:14px;margin-bottom:8px">Recommandations fitness</div>
+
+        <!-- Profil résumé compact -->
+        <div class="wf-card" style="font-size:10px;padding:8px;margin-bottom:10px;display:flex;flex-wrap:wrap;gap:6px">
+          <span class="wf-chip" style="font-size:9px">Perte de poids</span>
+          <span class="wf-chip" style="font-size:9px">28 ans</span>
+          <span class="wf-chip" style="font-size:9px">82 kg</span>
+          <span class="wf-chip" style="font-size:9px">⚠ Genou</span>
+        </div>
+
+        <!-- Stats grid 3 col -->
+        <div class="wf-stat-grid" style="margin-bottom:12px">
+          <div class="wf-stat-card"><span class="wf-stat-value" style="font-size:14px">3</span><span class="wf-stat-label" style="font-size:9px">séances</span></div>
+          <div class="wf-stat-card"><span class="wf-stat-value" style="font-size:14px">~1800</span><span class="wf-stat-label" style="font-size:9px">kcal</span></div>
+          <div class="wf-stat-card"><span class="wf-stat-value" style="font-size:14px">8</span><span class="wf-stat-label" style="font-size:9px">semaines</span></div>
+        </div>
+
+        <!-- Séances empilées -->
+        <article class="wf-session-card" aria-label="Séance 1">
+          <div class="wf-session-hd">
+            <span class="wf-session-num" style="width:22px;height:22px;font-size:10px">1</span>
+            <div><div style="font-size:11px;font-weight:600">Full Body — Haltères</div><div style="font-size:9px;color:#718096">45 min · Modérée</div></div>
+          </div>
+          <ul style="list-style:none">
+            <li class="wf-ex-item" style="font-size:10px"><span>Squat gobelet</span><span class="wf-ex-meta">3×15</span></li>
+            <li class="wf-ex-item" style="font-size:10px"><span>Pompes inclinées</span><span class="wf-ex-meta">3×12</span></li>
+            <li class="wf-ex-item" style="font-size:10px"><span>Rowing haltère</span><span class="wf-ex-meta">3×12</span></li>
+          </ul>
+          <div style="font-size:9px;color:#6b7280;margin-top:4px">💡 Flexion genou max 90°</div>
+        </article>
+
+        <article class="wf-session-card" aria-label="Séance 2">
+          <div class="wf-session-hd">
+            <span class="wf-session-num" style="width:22px;height:22px;font-size:10px">2</span>
+            <div><div style="font-size:11px;font-weight:600">Cardio léger</div><div style="font-size:9px;color:#718096">30 min</div></div>
+          </div>
+          <ul style="list-style:none">
+            <li class="wf-ex-item" style="font-size:10px"><span>Marche + yoga</span><span class="wf-ex-meta">30 min</span></li>
+          </ul>
+        </article>
+
+        <article class="wf-session-card" aria-label="Séance 3">
+          <div class="wf-session-hd">
+            <span class="wf-session-num" style="width:22px;height:22px;font-size:10px">3</span>
+            <div><div style="font-size:11px;font-weight:600">Upper Body</div><div style="font-size:9px;color:#718096">40 min</div></div>
+          </div>
+          <ul style="list-style:none">
+            <li class="wf-ex-item" style="font-size:10px"><span>Développé + Curl</span><span class="wf-ex-meta">3×12</span></li>
+          </ul>
+        </article>
+
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="wf-btn wf-btn-primary wf-btn-sm" style="flex:1">💪 Générer</button>
+          <button class="wf-btn wf-btn-sm" style="flex:1">Réinitialiser</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+</div><!-- /showcase -->
+
+<div class="wf-a11y-bar">
+  <h3>♿ Critères accessibilité</h3>
+  <span class="wf-a11y-chip">article + aria-label sur chaque séance</span>
+  <span class="wf-a11y-chip">aria-label sur ul exercices ("Exercices de la séance N")</span>
+  <span class="wf-a11y-chip">Stats : valeurs textuelles (pas seulement chiffres)</span>
+  <span class="wf-a11y-chip">Alerte limitation genou visible dans les notes</span>
+  <span class="wf-a11y-chip">Code MongoDB ID en format lisible</span>
+  <span class="wf-a11y-chip">Boutons "Générer" + "Réinitialiser" clairement distincts</span>
+</div>
+
+</body>
+</html>

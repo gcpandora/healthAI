@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WF-05 — Fitness Formulaire | HealthAI Coach Wireframes</title>
+  <link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+
+<div class="wf-page-header">
+  <div>
+    <h1>WF-05 — Recommandations fitness · Formulaire profil</h1>
+    <span class="meta">Objectif · âge · genre · poids · taille · niveau · limitations · équipement</span>
+  </div>
+  <span class="meta">MSPR TPRE502 · Wireframe basse-fidélité</span>
+</div>
+
+<div class="wf-filenav">
+  <a href="01-dashboard.html">01 Dashboard</a>
+  <span class="wf-filenav-sep">|</span>
+  <a href="02-nutrition-upload.html">02 Nutrition Upload</a>
+  <a href="03-nutrition-resultat.html">03 Nutrition Résultat</a>
+  <a href="04-nutrition-degrade.html">04 Nutrition Dégradé</a>
+  <span class="wf-filenav-sep">|</span>
+  <a href="05-fitness-formulaire.html" class="active">05 Fitness Formulaire</a>
+  <a href="06-fitness-resultat.html">06 Fitness Résultat</a>
+  <a href="07-fitness-skeleton.html">07 Fitness Skeleton</a>
+</div>
+
+<div class="showcase">
+
+  <!-- ══════════ DESKTOP ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">🖥</span>Desktop — ≥ 1024 px</div>
+    <div class="wf-app" style="min-height:900px">
+
+      <nav class="wf-sidebar" aria-label="Navigation principale">
+        <div class="wf-brand">HealthAI <button class="wf-brand-toggle" tabindex="-1">←</button></div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">📊</span>Dashboard</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">👥</span>Users</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">💪</span>Exercises</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🥗</span>Nutrition</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🤖</span>Analyse IA</div>
+        <div class="wf-nav-item active" aria-current="page"><span class="wf-nav-icon">🏋️</span>Fitness IA</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">✓</span>Data Quality</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">👤</span>Mon compte</div>
+        <div class="wf-sidebar-footer">v1.0.0</div>
+      </nav>
+
+      <main class="wf-content">
+        <header style="margin-bottom:16px">
+          <div class="wf-h1">Recommandations fitness IA</div>
+          <div class="wf-subtitle">Renseignez votre profil pour recevoir un programme d'entraînement personnalisé généré par IA et stocké dans MongoDB.</div>
+        </header>
+
+        <div class="wf-row" style="gap:16px;align-items:flex-start">
+
+          <!-- Formulaire (colonne gauche) -->
+          <section style="flex:1" aria-labelledby="form-title">
+            <div class="wf-h2" id="form-title">Votre profil</div>
+            <form aria-label="Formulaire de profil fitness" novalidate>
+
+              <!-- Objectif -->
+              <div class="wf-field">
+                <label for="obj-d" class="wf-label">Objectif <span class="req" aria-hidden="true">*</span></label>
+                <select id="obj-d" class="wf-select">
+                  <option>Forme générale</option>
+                  <option>Perte de poids</option>
+                  <option>Prise de masse</option>
+                  <option>Endurance / cardio</option>
+                  <option>Souplesse / mobilité</option>
+                </select>
+              </div>
+
+              <!-- Âge + Genre sur 2 colonnes -->
+              <div class="wf-split" style="margin-bottom:0">
+                <div class="wf-field">
+                  <label for="age-d" class="wf-label">Âge <span class="req" aria-hidden="true">*</span></label>
+                  <input id="age-d" type="number" class="wf-input" placeholder="ex: 28" min="13" max="100" required aria-required="true">
+                </div>
+                <div class="wf-field">
+                  <fieldset class="wf-fieldset" style="margin-bottom:0;border:none;padding:0">
+                    <legend class="wf-label">Genre <span class="req" aria-hidden="true">*</span></legend>
+                    <div class="wf-radio-row" style="margin-top:4px">
+                      <span class="wf-radio on" role="radio" aria-checked="true" tabindex="0">Homme</span>
+                      <span class="wf-radio" role="radio" aria-checked="false" tabindex="0">Femme</span>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+
+              <!-- Poids + Taille -->
+              <div class="wf-split" style="margin-bottom:0">
+                <div class="wf-field">
+                  <label for="weight-d" class="wf-label">Poids (kg) <span class="req" aria-hidden="true">*</span></label>
+                  <input id="weight-d" type="number" class="wf-input" placeholder="ex: 70" min="30" max="300" required aria-required="true">
+                </div>
+                <div class="wf-field">
+                  <label for="height-d" class="wf-label">Taille (m) <span class="req" aria-hidden="true">*</span></label>
+                  <input id="height-d" type="number" class="wf-input" placeholder="ex: 1.75" min="1.0" max="2.5" required aria-required="true">
+                </div>
+              </div>
+
+              <!-- Niveau expérience -->
+              <div class="wf-field">
+                <label for="exp-d" class="wf-label">Niveau d'expérience</label>
+                <select id="exp-d" class="wf-select">
+                  <option>Débutant (&#x3C; 6 mois)</option>
+                  <option>Intermédiaire (6 mois – 2 ans)</option>
+                  <option>Avancé (&gt; 2 ans)</option>
+                </select>
+              </div>
+
+              <!-- Limitations -->
+              <fieldset class="wf-fieldset">
+                <legend class="wf-legend">Limitations physiques <span style="font-weight:400;color:#9ca3af">(optionnel)</span></legend>
+                <div class="wf-check-grid">
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Dos / colonne</span>
+                  <span class="wf-chip on" tabindex="0" role="checkbox" aria-checked="true">Genoux</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Épaules</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Hanches</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Chevilles</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Poignets</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Cardiovasculaire</span>
+                </div>
+              </fieldset>
+
+              <!-- Équipement -->
+              <fieldset class="wf-fieldset">
+                <legend class="wf-legend">Équipement disponible <span style="font-weight:400;color:#9ca3af">(optionnel)</span></legend>
+                <div class="wf-check-grid">
+                  <span class="wf-chip on" tabindex="0" role="checkbox" aria-checked="true">Haltères</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Barre traction</span>
+                  <span class="wf-chip on" tabindex="0" role="checkbox" aria-checked="true">Tapis yoga</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Kettlebell</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Élastiques</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Vélo / rameur</span>
+                  <span class="wf-chip" tabindex="0" role="checkbox" aria-checked="false">Salle de sport</span>
+                </div>
+              </fieldset>
+
+              <!-- Actions -->
+              <div class="wf-form-actions">
+                <button type="submit" class="wf-btn wf-btn-primary show-focus" aria-busy="false">
+                  💪 Générer mon programme
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Panneau droit — empty state -->
+          <section style="flex:1" aria-label="Programme généré">
+            <div class="wf-empty" style="border:1px dashed #d1d5db;border-radius:8px;background:#fff">
+              <span class="wf-empty-icon">💪</span>
+              <div class="wf-empty-text">Remplissez votre profil et cliquez sur « Générer mon programme »</div>
+              <div style="font-size:10px;color:#cbd5e1;margin-top:8px">Le programme est stocké dans MongoDB et personnalisé par IA</div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════ TABLET ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">📱</span>Tablette — 768 px · Formulaire avec erreurs</div>
+    <div class="wf-app" style="min-height:900px">
+      <nav class="wf-sidebar-mini" aria-label="Navigation principale">
+        <div style="color:#fff;font-size:11px;font-weight:700;margin-bottom:12px;text-align:center">AI</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">📊</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">👥</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">💪</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🥗</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🤖</div>
+        <div class="wf-nav-item active" style="padding:8px;justify-content:center" aria-current="page">🏋️</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">✓</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">👤</div>
+      </nav>
+
+      <main class="wf-content">
+        <div class="wf-h1" style="margin-bottom:10px">Recommandations fitness IA</div>
+
+        <!-- Formulaire en colonne unique sur tablette, avec erreurs de validation visibles -->
+        <form aria-label="Formulaire profil fitness" novalidate>
+          <div class="wf-field">
+            <label for="obj-t" class="wf-label">Objectif <span class="req">*</span></label>
+            <select id="obj-t" class="wf-select"><option>Forme générale</option></select>
+          </div>
+
+          <div class="wf-split" style="margin-bottom:0">
+            <div class="wf-field">
+              <label for="age-t" class="wf-label">Âge <span class="req">*</span></label>
+              <!-- Champ en erreur -->
+              <input id="age-t" type="number" class="wf-input err" value="" aria-invalid="true" aria-describedby="age-t-err" placeholder="ex: 28">
+              <div id="age-t-err" class="wf-field-error" role="alert">Âge invalide (13–100 ans)</div>
+            </div>
+            <div class="wf-field">
+              <fieldset style="border:none;padding:0">
+                <legend class="wf-label">Genre <span class="req">*</span></legend>
+                <div class="wf-radio-row" style="margin-top:4px">
+                  <span class="wf-radio on">Homme</span>
+                  <span class="wf-radio">Femme</span>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="wf-split" style="margin-bottom:0">
+            <div class="wf-field">
+              <label for="w-t" class="wf-label">Poids (kg) <span class="req">*</span></label>
+              <input id="w-t" type="number" class="wf-input" placeholder="ex: 70">
+            </div>
+            <div class="wf-field">
+              <label for="h-t" class="wf-label">Taille (m) <span class="req">*</span></label>
+              <!-- Champ en erreur -->
+              <input id="h-t" type="number" class="wf-input err" value="3.5" aria-invalid="true" aria-describedby="h-t-err">
+              <div id="h-t-err" class="wf-field-error" role="alert">Taille invalide (1,00–2,50 m)</div>
+            </div>
+          </div>
+
+          <div class="wf-field">
+            <label for="exp-t" class="wf-label">Niveau d'expérience</label>
+            <select id="exp-t" class="wf-select"><option>Débutant</option></select>
+          </div>
+
+          <fieldset class="wf-fieldset">
+            <legend class="wf-legend">Limitations physiques</legend>
+            <div class="wf-check-grid">
+              <span class="wf-chip">Dos</span>
+              <span class="wf-chip on">Genoux</span>
+              <span class="wf-chip">Épaules</span>
+              <span class="wf-chip">Cardiovasculaire</span>
+            </div>
+          </fieldset>
+
+          <fieldset class="wf-fieldset">
+            <legend class="wf-legend">Équipement</legend>
+            <div class="wf-check-grid">
+              <span class="wf-chip on">Haltères</span>
+              <span class="wf-chip on">Tapis yoga</span>
+              <span class="wf-chip">Élastiques</span>
+            </div>
+          </fieldset>
+
+          <div class="wf-form-actions">
+            <button type="submit" class="wf-btn wf-btn-primary">💪 Générer mon programme</button>
+          </div>
+        </form>
+
+        <!-- Empty state en bas sur tablette -->
+        <div class="wf-empty" style="border:1px dashed #d1d5db;border-radius:8px;background:#fff;margin-top:14px">
+          <span class="wf-empty-icon" style="font-size:24px">💪</span>
+          <div class="wf-empty-text" style="font-size:11px">Programme ici après génération</div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════ MOBILE ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">📱</span>Mobile — 375 px</div>
+    <div style="min-height:900px;background:#f8fafc;">
+      <header class="wf-mobile-header">
+        <span class="wf-mobile-brand">Fitness IA</span>
+        <div class="wf-hamburger" role="button" aria-label="Menu" tabindex="0"><span></span><span></span><span></span></div>
+      </header>
+
+      <main style="padding:12px;">
+        <div class="wf-h1" style="font-size:14px;margin-bottom:4px">Recommandations fitness</div>
+        <div class="wf-subtitle">Profil → programme IA personnalisé</div>
+
+        <form aria-label="Formulaire profil fitness" novalidate>
+          <div class="wf-field">
+            <label for="obj-m" class="wf-label">Objectif <span class="req">*</span></label>
+            <select id="obj-m" class="wf-select" style="font-size:11px"><option>Forme générale</option></select>
+          </div>
+
+          <!-- Âge pleine largeur sur mobile -->
+          <div class="wf-field">
+            <label for="age-m" class="wf-label">Âge <span class="req">*</span></label>
+            <input id="age-m" type="number" class="wf-input" placeholder="ex: 28" style="font-size:11px">
+          </div>
+
+          <!-- Genre -->
+          <div class="wf-field">
+            <fieldset style="border:none;padding:0">
+              <legend class="wf-label">Genre <span class="req">*</span></legend>
+              <div class="wf-radio-row" style="margin-top:4px">
+                <span class="wf-radio on" style="flex:1;text-align:center">Homme</span>
+                <span class="wf-radio" style="flex:1;text-align:center">Femme</span>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Poids + Taille côte-à-côte sur mobile (réduit) -->
+          <div class="wf-split" style="margin-bottom:0">
+            <div class="wf-field">
+              <label for="w-m" class="wf-label">Poids (kg) <span class="req">*</span></label>
+              <input id="w-m" type="number" class="wf-input" placeholder="ex: 70" style="font-size:11px">
+            </div>
+            <div class="wf-field">
+              <label for="h-m" class="wf-label">Taille (m) <span class="req">*</span></label>
+              <input id="h-m" type="number" class="wf-input" placeholder="1.75" style="font-size:11px">
+            </div>
+          </div>
+
+          <div class="wf-field">
+            <label for="exp-m" class="wf-label">Niveau</label>
+            <select id="exp-m" class="wf-select" style="font-size:11px"><option>Débutant</option></select>
+          </div>
+
+          <!-- Limitations (compact) -->
+          <fieldset class="wf-fieldset" style="padding:8px">
+            <legend class="wf-legend" style="font-size:10px">Limitations physiques</legend>
+            <div class="wf-check-grid">
+              <span class="wf-chip" style="font-size:9px">Dos</span>
+              <span class="wf-chip on" style="font-size:9px">Genoux</span>
+              <span class="wf-chip" style="font-size:9px">Épaules</span>
+              <span class="wf-chip" style="font-size:9px">Cardio</span>
+            </div>
+          </fieldset>
+
+          <!-- Équipement -->
+          <fieldset class="wf-fieldset" style="padding:8px">
+            <legend class="wf-legend" style="font-size:10px">Équipement</legend>
+            <div class="wf-check-grid">
+              <span class="wf-chip on" style="font-size:9px">Haltères</span>
+              <span class="wf-chip on" style="font-size:9px">Tapis yoga</span>
+              <span class="wf-chip" style="font-size:9px">Élastiques</span>
+            </div>
+          </fieldset>
+
+          <!-- Bouton pleine largeur -->
+          <button type="submit" class="wf-btn wf-btn-primary wf-btn-full" style="margin-top:10px">
+            💪 Générer mon programme
+          </button>
+        </form>
+      </main>
+    </div>
+  </div>
+
+</div><!-- /showcase -->
+
+<div class="wf-a11y-bar">
+  <h3>♿ Critères accessibilité</h3>
+  <span class="wf-a11y-chip">label[for] sur chaque input + select</span>
+  <span class="wf-a11y-chip">fieldset + legend pour genre et checkboxes</span>
+  <span class="wf-a11y-chip">aria-invalid + aria-describedby sur champs en erreur</span>
+  <span class="wf-a11y-chip">role="alert" sur messages d'erreur</span>
+  <span class="wf-a11y-chip">Chips : role="checkbox" + aria-checked + tabindex</span>
+  <span class="wf-a11y-chip">Radio genre : role="radio" + aria-checked</span>
+  <span class="wf-a11y-chip">Focus focus visible sur bouton submit</span>
+  <span class="wf-a11y-chip">* obligatoire : aria-required + aria-hidden sur *</span>
+</div>
+
+</body>
+</html>

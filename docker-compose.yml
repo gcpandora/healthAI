@@ -1,0 +1,245 @@
+services:
+
+  # ─────────────────────────────────────────────
+  # BASE DE DONNÉES PRINCIPALE (Hanane)
+  # ─────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: healthai_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # API REST (Tojo)
+  # ─────────────────────────────────────────────
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+    container_name: healthai_api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      SECRET_KEY: ${API_SECRET_KEY}
+      DEBUG: ${API_DEBUG:-false}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # FIX : le volume local écrase /app mais les packages pip sont dans
+    # le système Python du container (/usr/local/lib) — pas dans /app.
+    # On supprime le volume bind-mount pour éviter tout conflit et
+    # s'assurer que le code embarqué dans l'image (COPY . .) est utilisé.
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # PIPELINE ETL (Houssem)
+  # ─────────────────────────────────────────────
+  etl:
+    build:
+      context: ./services/etl
+      dockerfile: Dockerfile
+    container_name: healthai_etl
+    restart: "no"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      # FIX : chemins corrigés pour correspondre aux scripts ETL
+      DATA_DIR: /app/data/raw
+      BDD_DIR: /app/data/clean_bdd
+      ML_DIR: /app/data/clean_ml
+      RAPPORT_DIR: /app/rapport
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      # FIX : bind-mount uniquement — permet de déposer les CSV dans
+      # services/etl/data/raw/ en local et de les retrouver dans le container.
+      # Le named volume etl_data est supprimé car il écrasait /app/data
+      # et rendait les datasets inaccessibles.
+      - ./services/etl:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # FRONTEND (Hélie)
+  # ─────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile
+    container_name: healthai_frontend
+    restart: unless-stopped
+    environment:
+      # Cette variable est lue par le navigateur (côté client)
+      # localhost:8000 est correct ici car c'est le navigateur qui appelle l'API
+      VITE_API_URL: http://localhost:${API_PORT:-8000}
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # BASE DE DONNÉES MONGODB (Houssem — micro-service)
+  # ─────────────────────────────────────────────
+  mongodb:
+    image: mongo:7
+    container_name: healthai_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthai_network
+        # ─────────────────────────────────────────────
+  # MICRO-SERVICE RECOMMANDATIONS (Houssem/Tom)
+  # ─────────────────────────────────────────────
+  recommendation:
+    build:
+      context: ./services/recommendation
+      dockerfile: Dockerfile
+    container_name: healthai_recommendation
+    restart: unless-stopped
+    environment:
+      MONGO_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}?authSource=admin
+      MONGO_DB: ${MONGO_DB}
+      TRAINING_DATA_PATH: /app/training_data/gym_members_exercise_tracking.csv
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./services/etl/data/raw:/app/training_data:ro
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # API IA TPRE502 (Tojo)
+  # ─────────────────────────────────────────────
+  ai-api:
+    build:
+      context: ./services/ai-api
+      dockerfile: Dockerfile
+    container_name: healthai_ai_api
+    restart: unless-stopped
+    environment:
+      API_KEY: ${AI_API_KEY:-dev_key}
+      OLLAMA_URL: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3}
+      HF_TOKEN: ${HF_TOKEN:-}
+      HF_MODEL: ${HF_MODEL:-google/vit-base-patch16-224}
+      BACKEND_URL: http://api:8000
+      ML_MODELS_PATH: /app/models
+    volumes:
+      - ./services/ml2/models:/app/models:ro
+    ports:
+      - "8002:8002"
+    depends_on:
+      - api
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # OLLAMA — LLM local (llama3)
+  # ─────────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: healthai_ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # DASHBOARD METABASE (Houssem)
+  # ─────────────────────────────────────────────
+  metabase:
+    image: metabase/metabase:latest
+    container_name: healthai_metabase
+    restart: unless-stopped
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ${METABASE_DB:-metabase_db}
+      MB_DB_PORT: 5432
+      MB_DB_HOST: postgres
+      MB_DB_USER: ${POSTGRES_USER}
+      MB_DB_PASS: ${POSTGRES_PASSWORD}
+    ports:
+      - "3001:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # MAQUETTES TPRE502 (wireframes statiques)
+  # ─────────────────────────────────────────────
+  maquettes:
+    image: nginx:alpine
+    container_name: healthai_maquettes
+    restart: unless-stopped
+    volumes:
+      - ./docs/maquettes:/usr/share/nginx/html:ro
+    ports:
+      - "3002:80"
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # ADMINER - Interface BDD (dev uniquement)
+  # ─────────────────────────────────────────────
+  adminer:
+    image: adminer:latest
+    container_name: healthai_adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - healthai_network
+    profiles:
+      - dev
+
+volumes:
+  postgres_data:
+  mongo_data:
+  ollama_data:
+
+networks:
+  healthai_network:
+    driver: bridge

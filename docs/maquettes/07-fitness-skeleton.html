@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WF-07 — Fitness Skeleton | HealthAI Coach Wireframes</title>
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position:  400px 0; }
+    }
+    .wf-skel-line, .wf-skel-block, .wf-skel-card {
+      background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+      background-size: 800px 100%;
+      animation: shimmer 1.5s infinite linear;
+    }
+    .skeleton-overlay {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .aria-busy-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 6px;
+    }
+    .spinner-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #0284c7;
+      display: inline-block;
+      animation: pulse 1s infinite alternate;
+    }
+    @keyframes pulse {
+      from { opacity: 0.3; transform: scale(0.9); }
+      to   { opacity: 1;   transform: scale(1.1); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wf-page-header">
+  <div>
+    <h1>WF-07 — Recommandations fitness · État chargement (skeleton)</h1>
+    <span class="meta">Formulaire soumis · génération IA en cours · skeleton loader côté résultats</span>
+  </div>
+  <span class="meta">MSPR TPRE502 · Wireframe basse-fidélité</span>
+</div>
+
+<div class="wf-filenav">
+  <a href="01-dashboard.html">01 Dashboard</a>
+  <span class="wf-filenav-sep">|</span>
+  <a href="02-nutrition-upload.html">02 Nutrition Upload</a>
+  <a href="03-nutrition-resultat.html">03 Nutrition Résultat</a>
+  <a href="04-nutrition-degrade.html">04 Nutrition Dégradé</a>
+  <span class="wf-filenav-sep">|</span>
+  <a href="05-fitness-formulaire.html">05 Fitness Formulaire</a>
+  <a href="06-fitness-resultat.html">06 Fitness Résultat</a>
+  <a href="07-fitness-skeleton.html" class="active">07 Fitness Skeleton</a>
+</div>
+
+<div class="showcase">
+
+  <!-- ══════════ DESKTOP ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">🖥</span>Desktop — ≥ 1024 px · Génération en cours…</div>
+    <div class="wf-app" style="min-height:860px">
+
+      <nav class="wf-sidebar" aria-label="Navigation principale">
+        <div class="wf-brand">HealthAI <button class="wf-brand-toggle" tabindex="-1">←</button></div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">📊</span>Dashboard</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">👥</span>Users</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">💪</span>Exercises</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🥗</span>Nutrition</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">🤖</span>Analyse IA</div>
+        <div class="wf-nav-item active" aria-current="page"><span class="wf-nav-icon">🏋️</span>Fitness IA</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">✓</span>Data Quality</div>
+        <div class="wf-nav-item"><span class="wf-nav-icon">👤</span>Mon compte</div>
+        <div class="wf-sidebar-footer">v1.0.0</div>
+      </nav>
+
+      <main class="wf-content">
+        <header style="margin-bottom:14px">
+          <div class="wf-h1">Recommandations fitness IA</div>
+          <div class="wf-subtitle">Renseignez votre profil pour recevoir un programme d'entraînement personnalisé.</div>
+        </header>
+
+        <div class="wf-row" style="gap:16px;align-items:flex-start">
+
+          <!-- Formulaire (verrouillé pendant chargement) -->
+          <section style="flex:1;opacity:0.7;pointer-events:none" aria-labelledby="form-sk-d" aria-disabled="true">
+            <div class="wf-h2" id="form-sk-d">Votre profil <span style="font-size:10px;color:#6b7280;font-weight:400">(soumis)</span></div>
+            <form aria-label="Formulaire profil fitness" novalidate>
+              <div class="wf-field">
+                <label for="obj-sk-d" class="wf-label">Objectif <span class="req">*</span></label>
+                <select id="obj-sk-d" class="wf-select" disabled><option>Perte de poids</option></select>
+              </div>
+              <div class="wf-split" style="margin-bottom:0">
+                <div class="wf-field">
+                  <label for="age-sk-d" class="wf-label">Âge <span class="req">*</span></label>
+                  <input id="age-sk-d" type="number" class="wf-input" value="28" disabled>
+                </div>
+                <div class="wf-field">
+                  <fieldset style="border:none;padding:0">
+                    <legend class="wf-label">Genre <span class="req">*</span></legend>
+                    <div class="wf-radio-row" style="margin-top:4px">
+                      <span class="wf-radio on">Homme</span>
+                      <span class="wf-radio">Femme</span>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="wf-split" style="margin-bottom:0">
+                <div class="wf-field">
+                  <label for="w-sk-d" class="wf-label">Poids (kg) <span class="req">*</span></label>
+                  <input id="w-sk-d" type="number" class="wf-input" value="82" disabled>
+                </div>
+                <div class="wf-field">
+                  <label for="h-sk-d" class="wf-label">Taille (m) <span class="req">*</span></label>
+                  <input id="h-sk-d" type="number" class="wf-input" value="1.78" disabled>
+                </div>
+              </div>
+              <div class="wf-field">
+                <label for="exp-sk-d" class="wf-label">Niveau</label>
+                <select id="exp-sk-d" class="wf-select" disabled><option>Intermédiaire</option></select>
+              </div>
+              <fieldset class="wf-fieldset">
+                <legend class="wf-legend">Limitations</legend>
+                <div class="wf-check-grid">
+                  <span class="wf-chip on">Genoux</span>
+                </div>
+              </fieldset>
+              <fieldset class="wf-fieldset">
+                <legend class="wf-legend">Équipement</legend>
+                <div class="wf-check-grid">
+                  <span class="wf-chip on">Haltères</span>
+                  <span class="wf-chip on">Tapis yoga</span>
+                </div>
+              </fieldset>
+              <div class="wf-form-actions">
+                <!-- Bouton en état chargement -->
+                <button type="submit" class="wf-btn wf-btn-primary" aria-busy="true" aria-disabled="true"
+                        style="opacity:.6;cursor:not-allowed" disabled>
+                  <span class="spinner-dot" style="margin-right:4px"></span>
+                  Génération en cours…
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Panneau droit — Skeleton loader -->
+          <section style="flex:1" aria-label="Génération du programme en cours" aria-busy="true" aria-live="polite">
+            <!-- Indicateur accessible -->
+            <div class="aria-busy-indicator" role="status" aria-live="polite">
+              <span class="spinner-dot"></span>
+              Génération du programme en cours — veuillez patienter (max 30 s)
+            </div>
+
+            <!-- Skeleton body -->
+            <div class="skeleton-overlay" aria-hidden="true">
+              <!-- Titre skeleton -->
+              <div class="wf-skel-line" style="width:70%;height:16px;margin-bottom:14px"></div>
+
+              <!-- Résumé skeleton -->
+              <div class="wf-skel-line" style="width:100%;margin-bottom:6px"></div>
+              <div class="wf-skel-line" style="width:85%;margin-bottom:16px"></div>
+
+              <!-- Stats skeleton — 3 blocs -->
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+                <div class="wf-skel-block" style="height:60px;border-radius:8px"></div>
+                <div class="wf-skel-block" style="height:60px;border-radius:8px"></div>
+                <div class="wf-skel-block" style="height:60px;border-radius:8px"></div>
+              </div>
+
+              <!-- Séance skeleton 1 -->
+              <div class="wf-skel-card" style="height:100px;margin-bottom:8px"></div>
+
+              <!-- Séance skeleton 2 -->
+              <div class="wf-skel-card" style="height:80px;margin-bottom:8px"></div>
+
+              <!-- Séance skeleton 3 -->
+              <div class="wf-skel-card" style="height:80px"></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════ TABLET ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">📱</span>Tablette — 768 px · Chargement</div>
+    <div class="wf-app" style="min-height:860px">
+      <nav class="wf-sidebar-mini" aria-label="Navigation principale">
+        <div style="color:#fff;font-size:11px;font-weight:700;margin-bottom:12px;text-align:center">AI</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">📊</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">👥</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">💪</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🥗</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">🤖</div>
+        <div class="wf-nav-item active" style="padding:8px;justify-content:center" aria-current="page">🏋️</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">✓</div>
+        <div class="wf-nav-item" style="padding:8px;justify-content:center">👤</div>
+      </nav>
+
+      <main class="wf-content">
+        <div class="wf-h1" style="margin-bottom:10px">Recommandations fitness IA</div>
+
+        <!-- Indicateur d'état chargement -->
+        <div class="aria-busy-indicator" role="status" aria-live="polite" style="margin-bottom:12px">
+          <span class="spinner-dot"></span>
+          Génération en cours — veuillez patienter…
+        </div>
+
+        <!-- Bouton désactivé -->
+        <button class="wf-btn wf-btn-primary wf-btn-sm" aria-busy="true" aria-disabled="true" style="opacity:.6;margin-bottom:14px;cursor:not-allowed">
+          <span class="spinner-dot" style="margin-right:4px"></span>
+          Génération en cours…
+        </button>
+
+        <!-- Skeleton results -->
+        <section aria-label="Chargement du programme" aria-busy="true" aria-live="polite">
+          <div class="skeleton-overlay" aria-hidden="true">
+            <div class="wf-skel-line" style="width:65%;height:14px;margin-bottom:12px"></div>
+            <div class="wf-skel-line" style="width:100%;margin-bottom:5px"></div>
+            <div class="wf-skel-line" style="width:80%;margin-bottom:14px"></div>
+
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+              <div class="wf-skel-block" style="height:55px;border-radius:8px"></div>
+              <div class="wf-skel-block" style="height:55px;border-radius:8px"></div>
+              <div class="wf-skel-block" style="height:55px;border-radius:8px"></div>
+            </div>
+
+            <div class="wf-skel-card" style="height:90px;margin-bottom:8px"></div>
+            <div class="wf-skel-card" style="height:70px;margin-bottom:8px"></div>
+            <div class="wf-skel-card" style="height:70px"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ══════════ MOBILE ══════════ -->
+  <div class="bp-col">
+    <div class="bp-label"><span class="bp-device-icon">📱</span>Mobile — 375 px · Chargement</div>
+    <div style="min-height:860px;background:#f8fafc;">
+
+      <header class="wf-mobile-header">
+        <span class="wf-mobile-brand">Fitness IA</span>
+        <div class="wf-hamburger" role="button" aria-label="Menu" tabindex="0"><span></span><span></span><span></span></div>
+      </header>
+
+      <main style="padding:12px;">
+        <div class="wf-h1" style="font-size:14px;margin-bottom:8px">Recommandations fitness</div>
+
+        <!-- Indicateur status mobile -->
+        <div class="aria-busy-indicator" role="status" aria-live="polite" style="margin-bottom:10px;font-size:10px">
+          <span class="spinner-dot"></span>
+          Génération IA en cours (30 s max)…
+        </div>
+
+        <!-- Bouton spinner pleine largeur -->
+        <button class="wf-btn wf-btn-primary wf-btn-full" aria-busy="true" aria-disabled="true"
+                style="opacity:.6;margin-bottom:12px;cursor:not-allowed;font-size:11px">
+          <span class="spinner-dot" style="margin-right:4px"></span>
+          Génération en cours…
+        </button>
+
+        <!-- Skeleton — pleine largeur mobile -->
+        <section aria-label="Chargement du programme" aria-busy="true" aria-live="polite">
+          <div class="skeleton-overlay" aria-hidden="true">
+            <!-- Titre -->
+            <div class="wf-skel-line" style="width:60%;height:13px;margin-bottom:10px"></div>
+
+            <!-- Résumé -->
+            <div class="wf-skel-line" style="width:100%;margin-bottom:5px"></div>
+            <div class="wf-skel-line" style="width:75%;margin-bottom:12px"></div>
+
+            <!-- Stats 3 col -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px">
+              <div class="wf-skel-block" style="height:48px;border-radius:8px"></div>
+              <div class="wf-skel-block" style="height:48px;border-radius:8px"></div>
+              <div class="wf-skel-block" style="height:48px;border-radius:8px"></div>
+            </div>
+
+            <!-- Séances skeleton -->
+            <div class="wf-skel-card" style="height:80px;margin-bottom:8px"></div>
+            <div class="wf-skel-card" style="height:60px;margin-bottom:8px"></div>
+            <div class="wf-skel-card" style="height:60px;margin-bottom:8px"></div>
+
+            <!-- Lignes texte supplémentaires -->
+            <div class="wf-skel-line" style="width:50%;margin-top:8px"></div>
+          </div>
+        </section>
+
+        <!-- Note UX mobile -->
+        <div style="margin-top:10px;padding:8px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;font-size:10px;color:#0369a1">
+          ℹ La page ne sera pas bloquée. Vous pouvez naviguer et revenir.
+        </div>
+      </main>
+    </div>
+  </div>
+
+</div><!-- /showcase -->
+
+<div class="wf-a11y-bar">
+  <h3>♿ Critères accessibilité</h3>
+  <span class="wf-a11y-chip">Skeleton : aria-busy="true" sur le conteneur</span>
+  <span class="wf-a11y-chip">aria-hidden="true" sur les blocs skeleton (déco)</span>
+  <span class="wf-a11y-chip">role="status" + aria-live="polite" sur l'indicateur texte</span>
+  <span class="wf-a11y-chip">Bouton : aria-busy="true" + texte "Génération en cours…"</span>
+  <span class="wf-a11y-chip">Formulaire : aria-disabled sur la section entière</span>
+  <span class="wf-a11y-chip">Mobile : info "page non bloquée" pour l'UX</span>
+  <span class="wf-a11y-chip">Animation CSS shimmer : respecte prefers-reduced-motion si ajouté</span>
+</div>
+
+</body>
+</html>

@@ -159,13 +159,11 @@ services:
       HF_TOKEN: ${HF_TOKEN:-}
       HF_MODEL: ${HF_MODEL:-google/vit-base-patch16-224}
       BACKEND_URL: http://api:8000
-      ML_MODELS_PATH: /app/models
-    volumes:
-      - ./services/ml2/models:/app/models:ro
     ports:
       - "8002:8002"
     depends_on:
       - api
+      - ollama
     networks:
       - healthai_network
 
@@ -235,10 +233,60 @@ services:
     profiles:
       - dev
 
+  # ─────────────────────────────────────────────────────────────────
+  # MINIO — Stockage objet (médias publications réseau social) (Hanane)
+  # Bucket : healthai-media  |  Policy : public-read pour les médias
+  # Console d'administration : http://localhost:9001
+  # API S3-compatible       : http://localhost:9000
+  # ─────────────────────────────────────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: healthai_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"   # API S3
+      - "9001:9001"   # Console web
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────────────────────────
+  # MINIO INIT — Crée le bucket healthai-media au premier démarrage (Hanane)
+  # S'exécute une seule fois puis s'arrête (restart: "no")
+  # ─────────────────────────────────────────────────────────────────
+  minio-init:
+    image: minio/mc:latest
+    container_name: healthai_minio_init
+    restart: "no"
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+        mc alias set local http://minio:9000 $${MINIO_ROOT_USER:-minioadmin} $${MINIO_ROOT_PASSWORD:-minioadmin};
+        mc mb --ignore-existing local/healthai-media;
+        mc anonymous set download local/healthai-media/posts;
+        mc anonymous set download local/healthai-media/profiles;
+        echo 'Bucket healthai-media configuré avec policy public-read sur posts/ et profiles/';
+      "
+    networks:
+      - healthai_network
+
 volumes:
   postgres_data:
   mongo_data:
   ollama_data:
+  minio_data:
 
 networks:
   healthai_network:

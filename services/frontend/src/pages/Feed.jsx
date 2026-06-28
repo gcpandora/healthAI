@@ -336,7 +336,7 @@ export default function Feed() {
       setCursor(nextCursor);
       setHasMore(!!nextCursor);
     } catch (err) {
-      if (!append) setError("Impossible de charger le flux. Vérifiez que l'API publications (port 8003) est démarrée.");
+      if (!append) setError("Impossible de charger le flux. Vérifiez que l'API publications (port 8004) est démarrée.");
     } finally {
       setLoading(false);
       setLoadingMore(false);

@@ -4,11 +4,7 @@ from uuid import UUID
 
 from repositories.user_repository import UserRepository
 from services.base import BaseService
-
-
-def hash_password(password: str) -> str:
-    # TODO: remplace par passlib / bcrypt
-    return password
+from core.security import hash_password
 
 
 class UserService(BaseService):

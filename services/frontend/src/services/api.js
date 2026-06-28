@@ -124,11 +124,11 @@ export const postsAPI = {
     });
   },
 
-  // ── Likes ──
+  // ── Likes (toggle — POST /posts/{id}/likes) ──
   likePost: (id) =>
-    postsAxios.post(`/posts/${id}/like`),
+    postsAxios.post(`/posts/${id}/likes`),
   unlikePost: (id) =>
-    postsAxios.delete(`/posts/${id}/like`),
+    postsAxios.post(`/posts/${id}/likes`),
 
   // ── Commentaires ──
   getComments: (postId, params = {}) =>

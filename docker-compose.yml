@@ -239,11 +239,17 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       API_SECRET_KEY: ${API_SECRET_KEY}
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_BUCKET: healthai-media
     ports:
       - "8004:8004"
     depends_on:
       postgres:
         condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8004/health')\""]
       interval: 15s
@@ -274,6 +280,31 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # MINIO INIT — Création bucket au démarrage (Tom)
+  # Idempotent : --ignore-existing évite l'échec si le bucket existe déjà.
+  # restart: on-failure : relance si minio n'est pas encore prêt.
+  # ─────────────────────────────────────────────
+  minio-init:
+    image: minio/mc
+    container_name: healthai_minio_init
+    restart: on-failure
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    entrypoint: /bin/sh
+    command: >
+      -c "
+      mc alias set local http://minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD &&
+      mc mb --ignore-existing local/healthai-media &&
+      mc anonymous set download local/healthai-media
+      "
     networks:
       - healthai_network
 

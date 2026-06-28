@@ -42,14 +42,14 @@
 
 ### Phase 0 — Socle infra Docker (bloquant, à faire en premier) — Tom
 - [ ] Maj `docker-compose.yml` : ajouter `publications-api:8003`, `minio:9000`, `prometheus:9090`, `grafana:3003`
-- [ ] Configuration MinIO (bucket `healthai-media`, policy public-read)
+- [x] Configuration MinIO (bucket `healthai-media`, policy public-read) — **`feature/minio-upload` le 2026-06-28**
 - [ ] Dockerfiles nouveaux services (`publications-api` Python slim, multi-stage si besoin)
 
 ### Phase 1 — Backend Publications — Hanane / Tojo
 - [x] Schéma PostgreSQL publications — **fait sur branche `BD&stockage`, à merger dans `develop`**
 - [x] Migration `V3__social_network.sql` — **idem, à merger**
 - [x] Structure service FastAPI publications `:8004` (routes CRUD `/posts`, `/posts/{id}`, pagination cursor-based) — **`feature/publications-api-v1` le 2026-06-28**
-- [ ] Endpoint upload média (`POST /media/upload` → MinIO, URL signée, validation type/taille)
+- [x] Endpoint upload média (`POST /media/upload` → MinIO, URL publique, validation type/taille) — **`feature/minio-upload` le 2026-06-28**
 - [x] Auth JWT partagée (réutiliser secret HS256 de l'API `:8000`, middleware commun) — **`feature/publications-api-v1` le 2026-06-28**
 
 > ⏩ **Action immédiate suggérée :** merger `BD&stockage` → `develop` avant de commencer le service FastAPI, pour ne pas développer sur un schéma qui n'existe pas encore côté `develop`.

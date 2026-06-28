@@ -4,8 +4,8 @@
 > qui reprend ce repo doit lire ce fichier en premier pour savoir où on en est.
 > Mets-le à jour à chaque session de travail et commite-le avec le code.
 
-**Dernière mise à jour :** 2026-06-28 (session mobile-init)
-**Repo :** https://github.com/tom-dab/healthAI · branche de travail principale : `develop`
+**Dernière mise à jour :** 2026-06-28 (session social-fixes — réseau social web fonctionnel end-to-end)
+**Repo :** https://github.com/tom-dab/healthAI · branche de travail principale : `dev`
 
 ---
 
@@ -24,26 +24,28 @@
 
 ---
 
-## 📍 État constaté du repo (vérifié par analyse directe, pas par déclaration)
+## 📍 État constaté du repo (vérifié 2026-06-28)
 
 | Élément | État |
 |---|---|
-| `develop` | Stack TPRE501/502 only — rien de TPRE601 |
-| Branche `BD&stockage` | ✅ `V3__social_network.sql` (posts, media, comments, likes) + ERD-V3.png — **PAS ENCORE MERGÉE dans develop** |
-| `docker-compose.yml` (develop) | Pas de `publications-api`, `minio`, `prometheus`, `grafana` |
-| Mobile | Aucun projet Expo créé |
-| CI (`.github/workflows/ci.yml`) | lint ruff → test-api → test-etl → build docker. Pas de SonarQube, pas de push image, pas de job deploy |
+| `dev` | Stack TPRE501/502 + TPRE601 complète — réseau social web fonctionnel |
+| `docker-compose.yml` | ✅ Tous services : api, publications-api:8004, minio, prometheus, grafana, metabase, mongodb, recommendation, ai-api, frontend |
+| Publications API `:8004` | ✅ CRUD posts, likes (toggle), commentaires, upload MinIO, JWT partagé |
+| Frontend web réseau social | ✅ Feed, CreatePost, SocialProfile — testé end-to-end |
+| Tables BDD réseau social | ✅ posts, likes, comments, user_profiles — créées via `create_all()` au démarrage de publications-api (⚠️ migration SQL V3 propre à écrire) |
+| Mobile | ✅ Init Expo SDK 56 + navigation + auth JWT (branche mergée) — écrans feed/post/profil restants |
+| CI (`.github/workflows/ci.yml`) | lint ruff → test-api → test-etl → build docker. Pas de SonarQube, pas de push image |
 | Tags Git | Aucun |
-| ⚠️ À nettoyer | `services/api/main.py` : mot de passe admin `"admin123"` en dur → variabiliser avant rendu |
+| ⚠️ À corriger avant rendu | `services/api/main.py` : mot de passe admin `"admin123"` en dur → variabiliser |
 
 ---
 
 ## 🔥 P1 — Éliminatoires (28/28 restantes) — ordre d'attaque
 
 ### Phase 0 — Socle infra Docker (bloquant, à faire en premier) — Tom
-- [ ] Maj `docker-compose.yml` : ajouter `publications-api:8003`, `minio:9000`, `prometheus:9090`, `grafana:3003`
+- [x] Maj `docker-compose.yml` : tous services ajoutés (`publications-api:8004`, `minio`, `prometheus`, `grafana`) — **`dev` le 2026-06-28**
 - [x] Configuration MinIO (bucket `healthai-media`, policy public-read) — **`feature/minio-upload` le 2026-06-28**
-- [ ] Dockerfiles nouveaux services (`publications-api` Python slim, multi-stage si besoin)
+- [x] Dockerfiles nouveaux services (`publications-api` Python slim) — **`dev` le 2026-06-28**
 
 ### Phase 1 — Backend Publications — Hanane / Tojo
 - [x] Schéma PostgreSQL publications — **fait sur branche `BD&stockage`, à merger dans `develop`**
@@ -52,15 +54,17 @@
 - [x] Endpoint upload média (`POST /media/upload` → MinIO, URL publique, validation type/taille) — **`feature/minio-upload` le 2026-06-28**
 - [x] Auth JWT partagée (réutiliser secret HS256 de l'API `:8000`, middleware commun) — **`feature/publications-api-v1` le 2026-06-28**
 
-> ⏩ **Action immédiate suggérée :** merger `BD&stockage` → `develop` avant de commencer le service FastAPI, pour ne pas développer sur un schéma qui n'existe pas encore côté `develop`.
+> ⏩ **Note :** les tables sont créées via `Base.metadata.create_all()` au démarrage de publications-api. Une migration `V3__publications.sql` propre reste à écrire dans `database/migrations/` pour la cohérence du repo.
 
-### Phase 2 — App mobile (livrable central, zéro existant) — Hélie
+### Phase 2 — App mobile (livrable central) — Hélie
 - [x] Initialisation projet Expo (`create-expo-app`, TypeScript, structure dossiers) — **`feature/mobile-init` le 2026-06-28** (SDK 56 + expo-router 56.x)
-- [x] Navigation (Expo Router / React Navigation : tabs Flux/Créer/Profil + stack auth) — **`feature/mobile-init` le 2026-06-28**
+- [x] Navigation (Expo Router : tabs Flux/Créer/Profil + stack auth) — **`feature/mobile-init` le 2026-06-28**
 - [x] Authentification JWT (Login/Register, appel API `:8000`, SecureStore) — **`feature/mobile-init` le 2026-06-28**
-- [ ] Flux de publications (feed infini : photo profil, nom, texte, média, likes, commentaires)
-- [ ] Création de publication (texte + image/vidéo via `expo-image-picker`, upload, preview)
-- [ ] Panneau de contrôle utilisateur (nom d'affichage, photo de profil MinIO, déconnexion)
+- [ ] Flux de publications mobile (appels réels vers `publications-api:8004`, pagination cursor)
+- [ ] Création de publication mobile (texte + `expo-image-picker`, upload MinIO, preview)
+- [ ] Panneau profil mobile (nom d'affichage, avatar MinIO, déconnexion)
+
+> Frontend web : Feed, CreatePost, SocialProfile ✅ fonctionnels (testés 2026-06-28)
 
 > Peut démarrer **en parallèle de la Phase 1** avec une API mockée, à condition de stabiliser le contrat d'API (OpenAPI) en premier.
 
@@ -191,6 +195,6 @@
 ## 🧩 Mode d'emploi de ce fichier
 
 1. Avant de commencer une tâche : vérifie son statut ici (pas seulement en mémoire/déclaration — un `git log`/`git branch -a` vaut mieux qu'un souvenir).
-2. Une tâche = une branche `feature/<nom-tache>` depuis `develop`.
+2. Une tâche = une branche `feature/<nom-tache>` depuis `dev`.
 3. Une fois une tâche terminée et mergée : cocher la case ici, dans le même commit ou le suivant.
 4. L'orchestration (choix de l'ordre, rédaction des prompts d'implémentation) se fait côté Claude.ai ; l'implémentation se fait côté Claude Code (VS Code) en collant le prompt fourni.

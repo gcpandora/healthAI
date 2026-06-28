@@ -48,8 +48,8 @@
 - [x] Dockerfiles nouveaux services (`publications-api` Python slim) — **`dev` le 2026-06-28**
 
 ### Phase 1 — Backend Publications — Hanane / Tojo
-- [x] Schéma PostgreSQL publications — **fait sur branche `BD&stockage`, à merger dans `develop`**
-- [x] Migration `V3__social_network.sql` — **idem, à merger**
+- [x] Schéma PostgreSQL publications — **`BD&stockage` mergée dans `dev`**
+- [x] Migration `V3__social_network.sql` — **mergée dans `dev`**
 - [x] Structure service FastAPI publications `:8004` (routes CRUD `/posts`, `/posts/{id}`, pagination cursor-based) — **`feature/publications-api-v1` le 2026-06-28**
 - [x] Endpoint upload média (`POST /media/upload` → MinIO, URL publique, validation type/taille) — **`feature/minio-upload` le 2026-06-28**
 - [x] Auth JWT partagée (réutiliser secret HS256 de l'API `:8000`, middleware commun) — **`feature/publications-api-v1` le 2026-06-28**
@@ -66,7 +66,7 @@
 
 > Frontend web : Feed, CreatePost, SocialProfile ✅ fonctionnels (testés 2026-06-28)
 
-> Peut démarrer **en parallèle de la Phase 1** avec une API mockée, à condition de stabiliser le contrat d'API (OpenAPI) en premier.
+> Phase 1 terminée — les écrans mobiles peuvent appeler l'API réelle directement.
 
 ### Phase 3 — Multi-environnement Docker — Tom
 - [ ] Profil `full` (toutes APIs IA réelles)
@@ -81,7 +81,7 @@
 - [ ] Workflow lint + qualité SonarQube (`sonar-scanner`, quality gate bloquant si couverture < 80%)
 
 ### Phase 5 — Monitoring — Tom
-- [ ] Configuration Prometheus (scrape `api:8000`, `publications-api:8003`, node-exporter, cAdvisor)
+- [ ] Configuration Prometheus (scrape `api:8000`, `publications-api:8004`, node-exporter, cAdvisor)
 - [ ] Dashboard Grafana — stack complète (CPU/RAM par container, req/s, taux erreur, latence p95)
 
 ### Phase 6 — Gestion de projet — Tom

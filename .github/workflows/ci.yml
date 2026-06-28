@@ -2,9 +2,9 @@ name: CI — HealthAI Coach
 
 on:
   push:
-    branches: [develop, main]
+    branches: [dev, main]
   pull_request:
-    branches: [develop, main]
+    branches: [dev, main]
 
 jobs:
   # ─────────────────────────────────────────────
@@ -29,6 +29,9 @@ jobs:
 
       - name: Lint ETL
         run: ruff check services/etl/
+
+      - name: Lint publications-api
+        run: ruff check services/publications-api/
 
   # ─────────────────────────────────────────────
   # TESTS API (FastAPI + pytest)

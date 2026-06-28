@@ -9,19 +9,19 @@
 
 ## Résumé
 
-| Bloc | Tâches | P1 | P2 | P3 |
-|---|---|---|---|---|
-| 1. Application mobile | 10 | 6 | 4 | 0 |
-| 2. API Publications & médias | 8 | 3 | 5 | 0 |
-| 3. Base de données & stockage | 8 | 3 | 4 | 1 |
-| 4. Infrastructure Docker & multi-env | 10 | 7 | 3 | 0 |
-| 5. CI/CD — GitHub Actions | 8 | 3 | 5 | 0 |
-| 6. Monitoring & observabilité | 7 | 2 | 5 | 0 |
-| 7. Tests & qualité de code | 5 | 0 | 4 | 1 |
-| 8. Documentation & architecture | 5 | 0 | 5 | 0 |
-| 9. Gestion de projet agile | 7 | 1 | 6 | 0 |
-| 10. Soutenance & livrables finaux | 4 | 3 | 0 | 1 |
-| **TOTAL** | **72** | **28** | **41** | **3** |
+| Bloc | Total | Fait | Restant | P1 ✅ | P2 ✅ | P3 ✅ |
+|---|---|---|---|---|---|---|
+| 1. Application mobile | 10 | 6 | 4 | 6/6 | 0/4 | — |
+| 2. API Publications & médias | 8 | 7 | 1 | 3/3 | 4/5 | — |
+| 3. Base de données & stockage | 8 | 7 | 1 | 3/3 | 4/4 | 0/1 |
+| 4. Infrastructure Docker & multi-env | 10 | 9 | 1 | 7/7 | 2/3 | — |
+| 5. CI/CD — GitHub Actions | 8 | 5 | 3 | 3/3 | 2/5 | — |
+| 6. Monitoring & observabilité | 7 | 5 | 2 | 2/2 | 3/5 | — |
+| 7. Tests & qualité de code | 5 | 2 | 3 | 0/0 | 1/4 | 1/1 |
+| 8. Documentation & architecture | 5 | 0 | 5 | — | 0/5 | — |
+| 9. Gestion de projet agile | 7 | 0 | 7 | 0/1 | 0/6 | — |
+| 10. Soutenance & livrables finaux | 4 | 0 | 4 | 0/3 | — | 0/1 |
+| **TOTAL** | **72** | **41** | **31** | **24/28** | **16/41** | **1/3** |
 
 ---
 

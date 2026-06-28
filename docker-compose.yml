@@ -309,6 +309,36 @@ services:
       - healthai_network
 
   # ─────────────────────────────────────────────
+  # LOKI — Agrégation de logs (Tom)
+  # ─────────────────────────────────────────────
+  loki:
+    image: grafana/loki:latest
+    container_name: healthai_loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # PROMTAIL — Collecte des logs Docker (Tom)
+  # ─────────────────────────────────────────────
+  promtail:
+    image: grafana/promtail:latest
+    container_name: healthai_promtail
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - ./services/loki/promtail-config.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/log:/var/log:ro
+    depends_on:
+      - loki
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
   # NODE-EXPORTER — Métriques système hôte (Tom)
   # ─────────────────────────────────────────────
   node-exporter:

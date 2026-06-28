@@ -48,9 +48,9 @@
 ### Phase 1 — Backend Publications — Hanane / Tojo
 - [x] Schéma PostgreSQL publications — **fait sur branche `BD&stockage`, à merger dans `develop`**
 - [x] Migration `V3__social_network.sql` — **idem, à merger**
-- [ ] Structure service FastAPI publications `:8003` (routes CRUD `/posts`, `/posts/{id}`, pagination cursor-based)
+- [x] Structure service FastAPI publications `:8004` (routes CRUD `/posts`, `/posts/{id}`, pagination cursor-based) — **`feature/publications-api-v1` le 2026-06-28**
 - [ ] Endpoint upload média (`POST /media/upload` → MinIO, URL signée, validation type/taille)
-- [ ] Auth JWT partagée (réutiliser secret HS256 de l'API `:8000`, middleware commun)
+- [x] Auth JWT partagée (réutiliser secret HS256 de l'API `:8000`, middleware commun) — **`feature/publications-api-v1` le 2026-06-28**
 
 > ⏩ **Action immédiate suggérée :** merger `BD&stockage` → `develop` avant de commencer le service FastAPI, pour ne pas développer sur un schéma qui n'existe pas encore côté `develop`.
 

@@ -70,3 +70,8 @@ services/etl/data/
 
 # Environnement virtuel Python
 services/etl/venv/
+
+# ─── Fichiers de documentation privés ────────────
+ARCHITECTURE_TPRE601.md
+CLAUDE.md
+toto.md

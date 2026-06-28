@@ -1,0 +1,157 @@
+apiVersion: 1
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Contact points — log uniquement (pas d'email, démontrable sans config externe)
+# Grafana loggue l'alerte dans ses propres logs si SMTP n'est pas configuré.
+# ─────────────────────────────────────────────────────────────────────────────
+contactPoints:
+  - orgId: 1
+    name: healthai-log
+    receivers:
+      - uid: healthai-log-receiver
+        type: email
+        settings:
+          addresses: noreply@healthai.local
+        disableResolveMessage: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Politique de routage — toutes les alertes vers le contact point log
+# ─────────────────────────────────────────────────────────────────────────────
+policies:
+  - orgId: 1
+    receiver: healthai-log
+    group_by: [alertname, service]
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 1h
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Règles d'alerte
+# ─────────────────────────────────────────────────────────────────────────────
+groups:
+  - orgId: 1
+    name: healthai-stack-alerts
+    folder: HealthAI
+    interval: 1m
+    rules:
+
+      # ── API :8000 down > 1 min ─────────────────────────────────────────────
+      - uid: alert-api-down
+        title: "API :8000 indisponible"
+        condition: C
+        data:
+          - refId: A
+            datasourceUid: prometheus-healthai
+            model:
+              expr: up{job="healthai-api"}
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [1]
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params: [A]
+                  reducer:
+                    type: last
+              expression: A
+              refId: C
+              type: classic_conditions
+        noDataState: Alerting
+        execErrState: Error
+        for: 1m
+        annotations:
+          summary: "API principale HealthAI (:8000) ne répond plus à Prometheus"
+          description: "Le job {{ $labels.job }} est down depuis plus de 1 minute."
+        labels:
+          severity: critical
+          service: api
+
+      # ── RAM > 90% ──────────────────────────────────────────────────────────
+      - uid: alert-ram-high
+        title: "RAM hôte > 90%"
+        condition: C
+        data:
+          - refId: A
+            datasourceUid: prometheus-healthai
+            model:
+              expr: >-
+                (1 - (node_memory_MemAvailable_bytes /
+                node_memory_MemTotal_bytes)) * 100
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [90]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: [A]
+                  reducer:
+                    type: last
+              expression: A
+              refId: C
+              type: classic_conditions
+        noDataState: NoData
+        execErrState: Error
+        for: 2m
+        annotations:
+          summary: "Utilisation mémoire hôte dépasse 90%"
+          description: "RAM utilisée : {{ $values.A.Value | printf \"%.1f\" }}%"
+        labels:
+          severity: warning
+          service: host
+
+      # ── Taux d'erreur HTTP 5xx > 5% ───────────────────────────────────────
+      - uid: alert-http-5xx
+        title: "Taux d'erreur HTTP 5xx > 5%"
+        condition: C
+        data:
+          - refId: A
+            datasourceUid: prometheus-healthai
+            model:
+              expr: >-
+                (
+                  sum(rate(http_requests_total{status=~"5.."}[5m]))
+                  /
+                  sum(rate(http_requests_total[5m]))
+                ) * 100
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [5]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: [A]
+                  reducer:
+                    type: last
+              expression: A
+              refId: C
+              type: classic_conditions
+        noDataState: NoData
+        execErrState: Error
+        for: 2m
+        annotations:
+          summary: "Taux d'erreurs HTTP 5xx dépasse 5%"
+          description: "Taux actuel : {{ $values.A.Value | printf \"%.2f\" }}%"
+        labels:
+          severity: warning
+          service: api

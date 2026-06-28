@@ -60,9 +60,9 @@
   `GET/PATCH /users/me/profile` : display_name, avatar_url (MinIO), bio courte
 - [x] 🔴 **P1** — Authentification JWT partagée — *Tojo*
   Réutiliser le secret HS256 de l'API :8000, middleware de validation commun entre services
-- [ ] 🟡 **P2** — Exposition métriques Prometheus — *Tojo*
+- [x] 🟡 **P2** — Exposition métriques Prometheus — *Tojo*
   `prometheus_fastapi_instrumentator` sur `/metrics`, compteurs de requêtes et latence par endpoint
-- [ ] 🟡 **P2** — Tests pytest API publications — *Houssem*
+- [x] 🟡 **P2** — Tests pytest API publications — *Houssem*
   Couverture > 80% : CRUD posts, upload mock MinIO, vérification auth, pagination correcte
 - [ ] 🟡 **P2** — Documentation OpenAPI — *Tojo*
   Descriptions des routes, schémas Pydantic v2, exemples de requêtes et réponses, swagger UI
@@ -75,13 +75,13 @@
   Fichier migration versionné pour les nouvelles tables, compatible avec V1 et V2 existantes
 - [x] 🔴 **P1** — Configuration MinIO (Docker) — *Hanane, Tom*
   Service minio :9000/:9001 (console), bucket `healthai-media`, policy public-read pour médias
-- [ ] 🟡 **P2** — Jeu de données de démonstration — *Hanane*
+- [x] 🟡 **P2** — Jeu de données de démonstration — *Hanane*
   Script seed : 10 utilisateurs, 30 posts, 20 médias, likes et commentaires — prêt pour le jury
-- [ ] 🟡 **P2** — Script de sauvegarde PostgreSQL — *Hanane*
+- [x] 🟡 **P2** — Script de sauvegarde PostgreSQL — *Hanane*
   `backup.sh` : pg_dump schedulé, rotation 7 jours, stockage local dans `/backups` avec horodatage
-- [ ] 🟡 **P2** — Script de restauration PostgreSQL — *Hanane*
+- [x] 🟡 **P2** — Script de restauration PostgreSQL — *Hanane*
   `restore.sh` : pg_restore + validation intégrité des données, documentation des étapes
-- [ ] 🟡 **P2** — Sauvegarde MinIO (buckets) — *Hanane*
+- [x] 🟡 **P2** — Sauvegarde MinIO (buckets) — *Hanane*
   `mc mirror` ou snapshot vers volume local, script de restauration avec vérification contenu
 - [ ] 🟢 **P3** — Index et performances — *Hanane*
   Index sur `posts.user_id`, `posts.created_at`, contrainte unique `likes(post_id, user_id)`, EXPLAIN ANALYZE
@@ -102,11 +102,11 @@
   Stoppe les containers, supprime les volumes, recharge le seed — remise à zéro propre pour jury
 - [x] 🔴 **P1** — Dockerfiles nouveaux services — *Tom, Tojo*
   Dockerfile publications-api (Python slim), multi-stage build si nécessaire, `.dockerignore` complet
-- [ ] 🟡 **P2** — Health checks et `depends_on` — *Tom*
+- [x] 🟡 **P2** — Health checks et `depends_on` — *Tom*
   Conditions healthcheck sur postgres, minio, api avant démarrage des services dépendants
 - [ ] 🟡 **P2** — Documentation images conteneurs — *Tom*
   Pour chaque image : base utilisée, ports, variables d'env, volumes montés, commandes utiles
-- [ ] 🔴 **P1** — Validation démarrage < 10 minutes — *Tom*
+- [x] 🔴 **P1** — Validation démarrage < 10 minutes — *Tom*
   Test chronométré sur machine froide, optimisation pull et cache des images si dépassement
 
 ## 5. CI/CD — GitHub Actions — 8 tâches
@@ -117,7 +117,7 @@
   Idem pour le nouveau service :8003, badge de couverture affiché dans le README
 - [x] 🔴 **P1** — Workflow lint et qualité (SonarQube) — *Tom, Houssem*
   sonar-scanner, `sonar-project.properties`, quality gate bloquant si couverture < 80%
-- [ ] 🟡 **P2** — Workflow build image Docker et push — *Tom*
+- [x] 🟡 **P2** — Workflow build image Docker et push — *Tom*
   `docker/build-push-action` vers GHCR ou Docker Hub, tags `:latest` + `:sha` de commit
 - [ ] 🟡 **P2** — Workflow déploiement automatique — *Tom*
   Job deploy conditionnel (branche main uniquement), ssh/docker-compose pull+up en remote
@@ -125,7 +125,7 @@
   Secrets repo : SONAR_TOKEN, DOCKER_TOKEN — aucun secret hardcodé dans le code
 - [ ] 🟡 **P2** — Documentation pipeline CI/CD — *Tom*
   Schéma du pipeline, description de chaque job, comment modifier ou ajouter des étapes
-- [ ] 🟡 **P2** — Rapport de tests automatisés — *Houssem*
+- [x] 🟡 **P2** — Rapport de tests automatisés — *Houssem*
   Export JUnit XML depuis pytest, publication dans les PR et comme artefact GitHub Actions
 
 ## 6. Monitoring & observabilité — 7 tâches
@@ -136,11 +136,11 @@
   Dashboard JSON provisionné : CPU/RAM par container, req/s par API, taux d'erreur, latence p95
 - [ ] 🟡 **P2** — Dashboard Grafana — métriques applicatives — *Tom*
   Posts créés/min, uploads média réussis, utilisateurs actifs, hits/miss cache applicatif
-- [ ] 🟡 **P2** — Alertes Grafana basiques — *Tom*
+- [x] 🟡 **P2** — Alertes Grafana basiques — *Tom*
   Alerte si API down > 1 min, RAM > 90%, taux d'erreur HTTP > 5% — démonstrable au jury
-- [ ] 🟡 **P2** — Logs centralisés (Loki + promtail) — *Tom*
+- [x] 🟡 **P2** — Logs centralisés (Loki + promtail) — *Tom*
   Collecte logs containers Docker, visualisation dans Grafana, recherche par service et niveau
-- [ ] 🟡 **P2** — node-exporter + cAdvisor — *Tom*
+- [x] 🟡 **P2** — node-exporter + cAdvisor — *Tom*
   Services Docker pour métriques système hôte et métriques containers, scraping Prometheus
 - [ ] 🟡 **P2** — Documentation système de supervision — *Tom, Houssem*
   Liste exhaustive des métriques collectées, procédure accès dashboards, lecture des alertes
@@ -151,9 +151,9 @@
   Document : périmètre, types de tests (unit, intégration, e2e, charge), critères d'acceptation
 - [ ] 🟡 **P2** — Indicateurs qualité SonarQube — *Houssem*
   Rapport : code smells, duplications, couverture, dette technique — valeurs cibles définies et atteintes
-- [ ] 🟡 **P2** — Tests d'intégration API publications — *Houssem*
+- [x] 🟡 **P2** — Tests d'intégration API publications — *Houssem*
   Scénarios complets : auth → post → upload → like → commentaire, avec base de données réelle
-- [ ] 🟢 **P3** — Tests de charge basiques (Locust / k6) — *Houssem*
+- [x] 🟢 **P3** — Tests de charge basiques (Locust / k6) — *Houssem*
   Scénario 50 utilisateurs simultanés, rapport temps de réponse, identification des goulots
 - [ ] 🟡 **P2** — Rapport de tests final — *Houssem*
   Synthèse : taux de réussite, bugs détectés et corrigés, indicateurs qualité finaux à date livraison

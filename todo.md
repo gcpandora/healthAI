@@ -46,13 +46,11 @@
 - [ ] Dockerfiles nouveaux services (`publications-api` Python slim, multi-stage si besoin)
 
 ### Phase 1 — Backend Publications — Hanane / Tojo
-- [x] Schéma PostgreSQL publications — **fait sur branche `BD&stockage`, à merger dans `develop`**
-- [x] Migration `V3__social_network.sql` — **idem, à merger**
+- [x] Schéma PostgreSQL publications — **mergé dans `dev` via `feature/merge-v3-social-schema` le 2026-06-28**
+- [x] Migration `V3__social_publications.sql` — **idem (tables : user_profiles, posts, likes, comments + scripts backup/restore/seed)**
 - [ ] Structure service FastAPI publications `:8003` (routes CRUD `/posts`, `/posts/{id}`, pagination cursor-based)
 - [ ] Endpoint upload média (`POST /media/upload` → MinIO, URL signée, validation type/taille)
 - [ ] Auth JWT partagée (réutiliser secret HS256 de l'API `:8000`, middleware commun)
-
-> ⏩ **Action immédiate suggérée :** merger `BD&stockage` → `develop` avant de commencer le service FastAPI, pour ne pas développer sur un schéma qui n'existe pas encore côté `develop`.
 
 ### Phase 2 — App mobile (livrable central, zéro existant) — Hélie
 - [ ] Initialisation projet Expo (`create-expo-app`, TypeScript, structure dossiers)

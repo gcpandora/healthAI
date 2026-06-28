@@ -5,6 +5,7 @@ on:
     branches: [dev, main]
   pull_request:
     branches: [dev, main]
+  workflow_dispatch:
 
 jobs:
   # ─────────────────────────────────────────────
@@ -114,3 +115,27 @@ jobs:
 
       - name: Build all images
         run: docker compose build
+
+  # ─────────────────────────────────────────────
+  # VALIDATION DÉMARRAGE (workflow_dispatch only)
+  # Lance la stack complète et vérifie < 10 min
+  # ─────────────────────────────────────────────
+  validate-startup:
+    name: Validate startup (< 10 min)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy env file
+        run: cp .env.example .env
+
+      - name: Make script executable
+        run: chmod +x scripts/validate_startup.sh
+
+      - name: Validate stack startup
+        run: ./scripts/validate_startup.sh
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker compose logs --tail=50

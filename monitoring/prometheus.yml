@@ -20,3 +20,9 @@ scrape_configs:
     static_configs:
       - targets: ["recommendation:8001"]
     metrics_path: /metrics
+
+  # API Publications — prometheus-fastapi-instrumentator
+  - job_name: healthai-publications-api
+    static_configs:
+      - targets: ["publications-api:8004"]
+    metrics_path: /metrics

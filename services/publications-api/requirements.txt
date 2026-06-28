@@ -7,3 +7,4 @@ pydantic-settings==2.13.1
 python-jose[cryptography]==3.5.0
 boto3==1.34.0
 python-multipart==0.0.9
+prometheus-fastapi-instrumentator==6.1.0

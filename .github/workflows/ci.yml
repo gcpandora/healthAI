@@ -5,6 +5,7 @@ on:
     branches: [dev, main]
   pull_request:
     branches: [dev, main]
+  workflow_dispatch:
 
 jobs:
   # ─────────────────────────────────────────────
@@ -100,12 +101,67 @@ jobs:
         run: pytest tests/ -v --tb=short
 
   # ─────────────────────────────────────────────
+  # TESTS API PUBLICATIONS (FastAPI + pytest + postgres)
+  # ─────────────────────────────────────────────
+  test-publications-api:
+    name: Tests API Publications
+    runs-on: ubuntu-latest
+    needs: lint-python
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: healthai_pub_test
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: services/publications-api
+        run: pip install -r requirements.txt
+
+      - name: Run tests with coverage
+        working-directory: services/publications-api
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/healthai_pub_test
+          API_SECRET_KEY: test_secret_key_for_ci
+          MINIO_ENDPOINT: ""
+          MINIO_ACCESS_KEY: ""
+          MINIO_SECRET_KEY: ""
+        run: |
+          pytest tests/ -v --tb=short \
+            --cov=. --cov-omit="tests/*" \
+            --cov-report=xml:coverage.xml \
+            --cov-report=term-missing
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-publications-api
+          path: services/publications-api/coverage.xml
+
+  # ─────────────────────────────────────────────
   # BUILD Docker (vérification que tout compile)
   # ─────────────────────────────────────────────
   build-docker:
     name: Build Docker images
     runs-on: ubuntu-latest
-    needs: [test-api, test-etl]
+    needs: [test-api, test-etl, test-publications-api]
     steps:
       - uses: actions/checkout@v4
 
@@ -114,3 +170,27 @@ jobs:
 
       - name: Build all images
         run: docker compose build
+
+  # ─────────────────────────────────────────────
+  # VALIDATION DÉMARRAGE (workflow_dispatch only)
+  # Lance la stack complète et vérifie < 10 min
+  # ─────────────────────────────────────────────
+  validate-startup:
+    name: Validate startup (< 10 min)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy env file
+        run: cp .env.example .env
+
+      - name: Make script executable
+        run: chmod +x scripts/validate_startup.sh
+
+      - name: Validate stack startup
+        run: ./scripts/validate_startup.sh
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker compose logs --tail=50

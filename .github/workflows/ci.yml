@@ -74,7 +74,14 @@ jobs:
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/healthai_test_db
           SECRET_KEY: test_secret_key_for_ci
           DEBUG: true
-        run: pytest tests/ -v --tb=short
+        run: pytest tests/ -v --tb=short --junit-xml=report.xml
+
+      - name: Upload JUnit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-api
+          path: services/api/report.xml
 
   # ─────────────────────────────────────────────
   # TESTS ETL (pytest)
@@ -97,7 +104,14 @@ jobs:
 
       - name: Run tests
         working-directory: services/etl
-        run: pytest tests/ -v --tb=short
+        run: pytest tests/ -v --tb=short --junit-xml=report.xml
+
+      - name: Upload JUnit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-etl
+          path: services/etl/report.xml
 
   # ─────────────────────────────────────────────
   # BUILD Docker (vérification que tout compile)

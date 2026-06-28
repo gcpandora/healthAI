@@ -88,9 +88,9 @@ export const mlAPI = {
   predictFitnessLevel: (data) => mlApi.post("/ml/predict-fitness-level", data),
 };
 
-// ─── RÉSEAU SOCIAL — Publications API (port 8003) ───────────────────────────
+// ─── RÉSEAU SOCIAL — Publications API (port 8004) ───────────────────────────
 const postsAxios = axios.create({
-  baseURL: "http://localhost:8003",
+  baseURL: "http://localhost:8004",
   timeout: 10000,
 });
 

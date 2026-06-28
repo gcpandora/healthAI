@@ -29,7 +29,6 @@ export default function Sidebar() {
       items: [
         { path: "/feed",           label: "Flux social",    icon: "🏠" },
         { path: "/create-post",    label: "Publier",        icon: "✏️" },
-        { path: "/chat",           label: "Messagerie",     icon: "💬" },
         { path: "/social-profile", label: "Profil social",  icon: "🪪" },
       ],
     },

@@ -19,9 +19,6 @@ import Feed from "./pages/Feed";
 import CreatePost from "./pages/CreatePost";
 import SocialProfile from "./pages/SocialProfile";
 
-// ── Messagerie instantanée ────────────────────────────────────────────────────
-import Chat from "./pages/Chat";
-
 export default function App() {
   return (
     <BrowserRouter>
@@ -45,15 +42,6 @@ export default function App() {
         <Route path="/feed"           element={<RequireAuth><Layout><Feed /></Layout></RequireAuth>} />
         <Route path="/create-post"    element={<RequireAuth><Layout><CreatePost /></Layout></RequireAuth>} />
         <Route path="/social-profile" element={<RequireAuth><Layout><SocialProfile /></Layout></RequireAuth>} />
-
-        {/* ── Messagerie ── */}
-        {/*
-          NOTE : Chat utilise toute la hauteur dispo (calc(100vh - header)).
-          Le Layout doit avoir overflow:hidden sur le content wrapper.
-          Si ce n'est pas le cas, ajouter dans Layout.jsx :
-            <main style={{ flex: 1, overflow: 'hidden' }}>
-        */}
-        <Route path="/chat"           element={<RequireAuth><Layout><Chat /></Layout></RequireAuth>} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

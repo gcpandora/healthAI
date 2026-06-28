@@ -239,53 +239,7 @@ volumes:
   postgres_data:
   mongo_data:
   ollama_data:
-  chat_db_data:
 
 networks:
   healthai_network:
     driver: bridge
-
-  # ─────────────────────────────────────────────
-  # CHAT — Base de données dédiée (PostgreSQL)
-  # ─────────────────────────────────────────────
-  chat-db:
-    image: postgres:15-alpine
-    container_name: healthai_chat_db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: social_place
-    volumes:
-      - chat_db_data:/var/lib/postgresql/data
-      - ./services/chat-db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - healthai_network
-
-  # ─────────────────────────────────────────────
-  # CHAT — Backend Socket.io (port 3000)
-  # ─────────────────────────────────────────────
-  chat-backend:
-    build: ./services/chat-backend
-    container_name: healthai_chat_backend
-    restart: on-failure
-    ports:
-      - "3000:3000"
-    environment:
-      PORT: 3000
-      DATABASE_URL: postgres://postgres:postgres@chat-db:5432/social_place
-      # ⚠️  Doit correspondre au JWT_SECRET de l'API HealthAI (port 8000)
-      JWT_SECRET: ${JWT_SECRET:-dev_secret_change_in_prod}
-      KEYCLOAK_SERVER_URL: http://localhost:8080
-      KEYCLOAK_REALM: social-network
-      ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3001
-    depends_on:
-      chat-db:
-        condition: service_healthy
-    networks:
-      - healthai_network

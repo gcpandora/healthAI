@@ -1,0 +1,15 @@
+# Override "offline" — aucune connexion externe.
+# HuggingFace mocké via MOCK_HF=true. Ollama utilise le modèle du volume local (ollama_data).
+# Adminer déjà désactivé par défaut (profiles: [dev] dans le compose de base).
+#
+# PRÉREQUIS : les CSV Kaggle doivent être présents dans services/etl/data/raw/ avant le démarrage.
+# En l'absence de ces fichiers, l'ETL échouera (aucun seed SQL de secours n'existe).
+# Fichiers attendus :
+#   - daily_food_nutrition_dataset.csv
+#   - diet_recommendations_dataset.csv
+#   - gym_members_exercise_tracking.csv
+#   - gym_members_exercise_tracking_synthetic_data.csv
+services:
+  ai-api:
+    environment:
+      MOCK_HF: "true"

@@ -1,0 +1,5 @@
+# Override "full" — comportement par défaut, toutes les intégrations réelles actives.
+services:
+  ai-api:
+    environment:
+      MOCK_HF: "false"

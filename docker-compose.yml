@@ -220,6 +220,128 @@ services:
       - healthai_network
 
   # ─────────────────────────────────────────────
+  # PUBLICATIONS API — Service réseau social (Tojo)
+  # ─────────────────────────────────────────────
+  publications-api:
+    build:
+      context: ./services/publications-api
+      dockerfile: Dockerfile
+    container_name: healthai_publications_api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      API_SECRET_KEY: ${API_SECRET_KEY}
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_BUCKET: healthai-media
+    ports:
+      - "8004:8004"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8004/health')\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # MINIO — Stockage objet S3-compatible (Tom)
+  # ─────────────────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: healthai_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # Console web
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # MINIO INIT — Création bucket au démarrage (Tom)
+  # Idempotent : --ignore-existing évite l'échec si le bucket existe déjà.
+  # restart: on-failure : relance si minio n'est pas encore prêt.
+  # ─────────────────────────────────────────────
+  minio-init:
+    image: minio/mc
+    container_name: healthai_minio_init
+    restart: on-failure
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    entrypoint: /bin/sh
+    command: >
+      -c "
+      mc alias set local http://minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD &&
+      mc mb --ignore-existing local/healthai-media &&
+      mc anonymous set download local/healthai-media
+      "
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # PROMETHEUS — Collecte de métriques (Tom)
+  # ─────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: healthai_prometheus
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+      - --web.config.file=/etc/prometheus/web.yml
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/web.yml:/etc/prometheus/web.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
+  # GRAFANA — Dashboards de monitoring (Tom)
+  # ─────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: healthai_grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3003:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - healthai_network
+
+  # ─────────────────────────────────────────────
   # ADMINER - Interface BDD (dev uniquement)
   # ─────────────────────────────────────────────
   adminer:
@@ -239,6 +361,9 @@ volumes:
   postgres_data:
   mongo_data:
   ollama_data:
+  minio_data:
+  prometheus_data:
+  grafana_data:
 
 networks:
   healthai_network:

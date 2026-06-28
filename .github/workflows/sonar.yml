@@ -1,0 +1,86 @@
+name: Quality — SonarQube
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
+
+jobs:
+  sonar:
+    name: SonarQube Analysis
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: healthai_sonar_test
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # nécessaire pour l'analyse SonarQube complète
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # ── Couverture API principale ──────────────────────────────────────────
+      - name: Install API dependencies
+        working-directory: services/api
+        run: pip install -r requirements.txt pytest pytest-cov
+
+      - name: Run API tests (coverage)
+        working-directory: services/api
+        env:
+          DATABASE_URL: sqlite:///./test.db
+          SECRET_KEY: test_secret_key_for_ci
+          DEBUG: "true"
+        run: |
+          pytest tests/ -v --tb=short \
+            --cov=. --cov-omit="tests/*" \
+            --cov-report=xml:coverage.xml || true
+
+      # ── Couverture API publications ────────────────────────────────────────
+      - name: Install publications-api dependencies
+        working-directory: services/publications-api
+        run: pip install -r requirements.txt
+
+      - name: Run publications-api tests (coverage)
+        working-directory: services/publications-api
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/healthai_sonar_test
+          API_SECRET_KEY: test_secret_key_for_ci
+          MINIO_ENDPOINT: ""
+          MINIO_ACCESS_KEY: ""
+          MINIO_SECRET_KEY: ""
+        run: |
+          pytest tests/ -v --tb=short \
+            --cov=. --cov-omit="tests/*" \
+            --cov-report=xml:coverage.xml || true
+
+      # ── Analyse SonarQube ─────────────────────────────────────────────────
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # ── Quality Gate ──────────────────────────────────────────────────────
+      - name: SonarQube Quality Gate check
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

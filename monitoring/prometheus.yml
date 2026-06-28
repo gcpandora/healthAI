@@ -21,6 +21,12 @@ scrape_configs:
       - targets: ["recommendation:8001"]
     metrics_path: /metrics
 
+  # API Publications (réseau social)
+  - job_name: publications-api
+    static_configs:
+      - targets: ["publications-api:8004"]
+    metrics_path: /metrics
+
   # Métriques hôte (CPU, RAM, disque, réseau)
   - job_name: node-exporter
     static_configs:

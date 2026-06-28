@@ -102,3 +102,11 @@ Toutes les PKs sont des UUID v4. Timestamps en TIMESTAMPTZ.
 - Ne jamais hardcoder de chemins — utiliser les variables d'environnement (`DATA_DIR`, `DATABASE_URL`)
 - Le minimum viable pour l'examen : ETL qui charge 2 datasets en BDD + API qui répond + Metabase qui affiche 1 graphique
 - `docker compose up` doit tout démarrer en moins de 30 minutes
+
+---
+
+## Conventions de travail (toutes sessions, tous membres)
+1. **Une tâche = une branche dédiée** (`feature/<nom-tache>` ou `fix/<nom-tache>`) depuis `dev`. Jamais de commit direct sur `dev`.
+2. **Avant chaque changement de code**, expliquer en 1-2 phrases CE QUE l'on change et POURQUOI, avant de l'exécuter.
+3. **Référencer la tâche todo.md** dans les messages de commit (ex : `feat(db): [Phase 1] migration V3 réseau social`).
+4. **Pas de push / merge dans `dev` sans diff validé** par Tom (chef de projet).

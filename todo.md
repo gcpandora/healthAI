@@ -4,7 +4,7 @@
 > qui reprend ce repo doit lire ce fichier en premier pour savoir où on en est.
 > Mets-le à jour à chaque session de travail et commite-le avec le code.
 
-**Dernière mise à jour :** 2026-06-28
+**Dernière mise à jour :** 2026-06-28 (session mobile-init)
 **Repo :** https://github.com/tom-dab/healthAI · branche de travail principale : `develop`
 
 ---
@@ -55,9 +55,9 @@
 > ⏩ **Action immédiate suggérée :** merger `BD&stockage` → `develop` avant de commencer le service FastAPI, pour ne pas développer sur un schéma qui n'existe pas encore côté `develop`.
 
 ### Phase 2 — App mobile (livrable central, zéro existant) — Hélie
-- [ ] Initialisation projet Expo (`create-expo-app`, TypeScript, structure dossiers)
-- [ ] Navigation (Expo Router / React Navigation : tabs Flux/Créer/Profil + stack auth)
-- [ ] Authentification JWT (Login/Register, appel API `:8000`, SecureStore)
+- [x] Initialisation projet Expo (`create-expo-app`, TypeScript, structure dossiers) — **`feature/mobile-init` le 2026-06-28** (SDK 56 + expo-router 56.x)
+- [x] Navigation (Expo Router / React Navigation : tabs Flux/Créer/Profil + stack auth) — **`feature/mobile-init` le 2026-06-28**
+- [x] Authentification JWT (Login/Register, appel API `:8000`, SecureStore) — **`feature/mobile-init` le 2026-06-28**
 - [ ] Flux de publications (feed infini : photo profil, nom, texte, média, likes, commentaires)
 - [ ] Création de publication (texte + image/vidéo via `expo-image-picker`, upload, preview)
 - [ ] Panneau de contrôle utilisateur (nom d'affichage, photo de profil MinIO, déconnexion)

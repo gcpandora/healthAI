@@ -16,6 +16,7 @@ class Settings(BaseSettings):
 
     # MinIO — stockage objet S3-compatible
     minio_endpoint: str = os.getenv("MINIO_ENDPOINT", "minio:9000")
+    minio_public_endpoint: str = os.getenv("MINIO_PUBLIC_ENDPOINT", "localhost:9000")
     minio_access_key: str = os.getenv("MINIO_ACCESS_KEY", "")
     minio_secret_key: str = os.getenv("MINIO_SECRET_KEY", "")
     minio_bucket: str = os.getenv("MINIO_BUCKET", "healthai-media")

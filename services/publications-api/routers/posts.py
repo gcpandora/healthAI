@@ -1,5 +1,6 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status, Request
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from core.database import get_db
@@ -20,11 +21,24 @@ router = APIRouter(tags=["posts"])
 profile_router = APIRouter(tags=["profile"])
 
 
-def _build_post_out(post: Post, repo: PostRepository) -> PostOut:
+def _get_username_fallback(user_id: UUID, db: Session) -> str:
+    row = db.execute(
+        text("SELECT username FROM users WHERE id = :uid"),
+        {"uid": str(user_id)},
+    ).fetchone()
+    return row[0] if row else "Utilisateur"
+
+
+def _build_post_out(post: Post, repo: PostRepository, db: Session) -> PostOut:
     author_row = repo.get_author(post.user_id)
+    display_name = (
+        author_row.display_name
+        if author_row
+        else _get_username_fallback(post.user_id, db)
+    )
     author = AuthorOut(
         user_id=post.user_id,
-        display_name=author_row.display_name if author_row else "Inconnu",
+        display_name=display_name,
         avatar_url=author_row.avatar_url if author_row else None,
     )
     return PostOut(
@@ -50,7 +64,7 @@ def list_posts(
     repo = PostRepository(db)
     posts, next_cursor = repo.list(limit, cursor)
     return PostPage(
-        items=[_build_post_out(p, repo) for p in posts],
+        items=[_build_post_out(p, repo, db) for p in posts],
         next_cursor=next_cursor,
     )
 
@@ -70,7 +84,7 @@ async def create_post(
         media_urls=payload.media_urls,
     )
     post = repo.create(post)
-    return _build_post_out(post, repo)
+    return _build_post_out(post, repo, db)
 
 
 # ─── GET /posts/{id} ──────────────────────────────────────────────────────────
@@ -80,7 +94,7 @@ def get_post(post_id: UUID, db: Session = Depends(get_db)):
     post = repo.get(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post introuvable")
-    return _build_post_out(post, repo)
+    return _build_post_out(post, repo, db)
 
 
 # ─── DELETE /posts/{id} ───────────────────────────────────────────────────────

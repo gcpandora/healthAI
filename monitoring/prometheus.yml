@@ -5,6 +5,9 @@ global:
 scrape_configs:
   # Prometheus se scrappe lui-même
   - job_name: prometheus
+    basic_auth:
+      username: admin
+      password: prometheus_dev_password
     static_configs:
       - targets: ["localhost:9090"]
 

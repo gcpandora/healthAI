@@ -169,7 +169,7 @@ function PostCard({ post, currentUserId, onDelete }) {
   const [deleting, setDeleting] = useState(false);
 
   const authorName =
-    post.author_display_name || post.author_name || post.user_id || "Utilisateur";
+    post.author?.display_name || post.author_display_name || post.author_name || "Utilisateur";
 
   const toggleLike = async () => {
     const was = liked;
@@ -208,7 +208,7 @@ function PostCard({ post, currentUserId, onDelete }) {
     >
       {/* En-tête */}
       <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-        <Avatar name={authorName} size={42} src={post.avatar_url} />
+        <Avatar name={authorName} size={42} src={post.author?.avatar_url} />
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: "700", fontSize: "15px", color: "#1e293b" }}>{authorName}</div>
           <div style={{ fontSize: "12px", color: "#94a3b8" }}>{timeAgo(post.created_at)}</div>

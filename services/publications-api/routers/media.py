@@ -62,5 +62,5 @@ async def upload_media(
     except (BotoCoreError, ClientError) as exc:
         raise HTTPException(status_code=502, detail=f"Erreur stockage objet : {exc}") from exc
 
-    url = f"http://{settings.minio_endpoint}/{settings.minio_bucket}/{key}"
+    url = f"http://{settings.minio_public_endpoint}/{settings.minio_bucket}/{key}"
     return {"url": url}

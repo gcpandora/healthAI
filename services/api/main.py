@@ -8,6 +8,7 @@ Intègre tous les routers et crée les tables à la première exécution.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # Import des configurations
 from core.config import settings
@@ -112,5 +113,4 @@ def health_check():
 app.include_router(auth_router)
 app.include_router(api_router, prefix='/api/v1')
 
-# À ajouter ultérieurement:
-# app.include_router(metrics.router)
+Instrumentator().instrument(app).expose(app)
